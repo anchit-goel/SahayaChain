@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loan Application Submitted</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f2f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .confirmation-box {
+      background-color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 40px 30px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    .confirmation-box img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 20px;
+    }
+
+    .confirmation-box h1 {
+      font-size: 22px;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .confirmation-box p {
+      font-size: 16px;
+      color: #555;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .confirmation-box {
+        padding: 30px 20px;
+      }
+
+      .confirmation-box h1 {
+        font-size: 20px;
+      }
+
+      .confirmation-box p {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="confirmation-box">
+    <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" alt="Success Icon" />
+    <h1>Loan Application Submitted</h1>
+    <p>Thank you for visiting Sahayachain.</p>
+  </div>
+
+</body>
+</html>
