@@ -1,0 +1,55 @@
+FRAUD DETECTION APPLICATION (BACKEND PROTOTYPE)
+
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+import joblib
+from flask import Flask, request, jsonify
+
+# Load dataset (Use a real dataset in production)
+
+data = pd.read_csv("creditcard.csv")  # Replace with actual dataset
+
+# Feature selection
+
+X = data.drop(columns=["Class"])  # Features (remove target column)
+y = data["Class"]  # Target: 0 (legit) or 1 (fraud)
+
+# Train-test split
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train model
+
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# Evaluate model
+
+predictions = model.predict(X_test)
+print("Model Accuracy:", accuracy_score(y_test, predictions))
+print("Classification Report:\n", classification_report(y_test, predictions))
+
+# Save the trained model
+
+joblib.dump(model, "fraud_model.pkl")
+
+# Flask API for integration
+
+app = Flask(__name__)
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    try:
+        data = request.get_json()
+        input_features = np.array(data["features"]).reshape(1, -1)  # Convert input to array
+        model = joblib.load("fraud_model.pkl")  # Load trained model
+        prediction = model.predict(input_features)[0]  # Predict fraud (1) or not (0)
+        return jsonify({"fraud_detected": bool(prediction)})
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
+if __name__ == "__main__":
+    app.run(debug=True)
