@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - SahayaChain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9f9f9;
+      color: #0c1c2c;
+      min-height: 100vh;
+    }
+    
+    /* NAVBAR */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: #0c1c2c;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-container img {
+      width: 40px;
+      margin-right: 10px;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .menu-toggle div {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      margin: 4px 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #3be4d1;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
+      }
+
+      nav {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+        margin-top: 1rem;
+      }
+
+      nav.active {
+        display: flex;
+      }
+    }
+    
+    .spacer {
+      height: 80px;
+    }
+    
+    /* CONTACT SPECIFIC STYLES */
+    .contact-container {
+      padding: 6rem 2rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      justify-content: center;
+    }
+    
+    .contact-form {
+      flex: 1;
+      min-width: 300px;
+      max-width: 600px;
+      background-color: white;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .contact-form h2 {
+      font-size: 2.2rem;
+      color: #07464c;
+      margin-bottom: 1rem;
+    }
+    
+    .contact-form p {
+      color: #555;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #3be4d1;
+      box-shadow: 0 0 0 2px rgba(59, 228, 209, 0.2);
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    .button-primary {
+      background-color: #3be4d1;
+      color: #0c1c2c;
+      border: none;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .button-primary:hover {
+      background-color: #2ad1be;
+      transform: translateY(-3px);
+    }
+    
+    .contact-info {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .contact-info img {
+      width: 180px;
+      margin-bottom: 2rem;
+      align-self: center;
+    }
+    
+    .info-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      background-color: white;
+      padding: 1.2rem;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease;
+    }
+    
+    .info-item:hover {
+      transform: translateY(-5px);
+    }
+    
+    .info-icon {
+      font-size: 1.8rem;
+      margin-right: 1rem;
+      color: #07464c;
+    }
+    
+    .info-content {
+      color: #333;
+      line-height: 1.5;
+    }
+    
+    .info-content p {
+      margin: 0;
+    }
+    
+    /* Animation */
+    .animate-fade-in-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s ease-out forwards;
+    }
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* FOOTER */
+    footer {
+      background-color: #0c1c2c;
+      color: white;
+      padding: 3rem 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 3rem;
+    }
+
+    .footer-col {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .footer-col h3 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      color: #3be4d1;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-col a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-col a:hover {
+      color: white;
+    }
+
+    .copyright {
+      margin-top: 3rem;
+      text-align: center;
+      color: #999;
+      font-size: 0.9rem;
+    }
+    
+    /* RESPONSIVE STYLES */
+    @media (max-width: 768px) {
+      .contact-container {
+        padding: 5rem 1.5rem 2rem;
+      }
+      
+      .contact-form,
+      .contact-info {
+        max-width: 100%;
+      }
+    }
+
+    /* Quick Access Buttons */
+    .quick-access-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 2rem auto;
+      max-width: 800px;
+    }
+    
+    .quick-access-btn {
+      padding: 1rem 1.5rem;
+      background-color: #3be4d1;
+      color: #07464c;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+    
+    .quick-access-btn:hover {
+      background-color: #2ad1be;
+      transform: translateY(-3px);
+    }
+    
+    .quick-access-btn i {
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header id="navbar">
+    <div class="logo-container">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/link--v1.png" alt="Logo">
+      <div class="logo">SahayaChain</div>
+    </div>
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <nav id="navLinks">
+      <a href="index-in.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="communities.html">Our Communities</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="login3.html">Sign In</a>
+    </nav>
+  </header>
+
+  <div class="spacer"></div>
+
+  <main class="contact-container">
+    <!-- Contact Form -->
+    <div class="contact-form animate-fade-in-up">
+      <h2>Contact Us</h2>
+      <p>Feel free to get in touch with us via the form below. We'll respond as soon as possible.</p>
+      <form>
+        <div class="form-group">
+          <input type="text" placeholder="Your Name" required>
+        </div>
+        <div class="form-group">
+          <input type="email" placeholder="Your Email" required>
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Subject">
+        </div>
+        <div class="form-group">
+          <textarea placeholder="Your Message" required></textarea>
+        </div>
+        <button type="submit" class="button-primary">Send Message</button>
+      </form>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="contact-info animate-fade-in-up" style="animation-delay: 0.2s;">
+      <img src="https://img.icons8.com/ios-filled/250/3be4d1/talk-male.png" alt="Contact Illustration">
+      
+      <div class="info-item">
+        <div class="info-icon">📍</div>
+        <div class="info-content">
+          <p>123 Loan Blvd, Suite 100</p>
+          <p>Citytown, CT 12345</p>
+        </div>
+      </div>
+      
+      <div class="info-item">
+        <div class="info-icon">📞</div>
+        <div class="info-content">
+          <p>+1 (234) 567-8900</p>
+          <p>Mon-Fri: 9:00 AM - 5:00 PM</p>
+        </div>
+      </div>
+      
+      <div class="info-item">
+        <div class="info-icon">📧</div>
+        <div class="info-content">
+          <p>info@sahayachain.com</p>
+          <p>support@sahayachain.com</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Quick Access Buttons for logged-in users -->
+  <div id="quickAccessButtons" class="quick-access-buttons" style="display: none;">
+    <a href="dashboard-borrow.html" class="quick-access-btn">
+      <i class="fas fa-tachometer-alt"></i> My Dashboard
+    </a>
+    <a href="apply.html" class="quick-access-btn">
+      <i class="fas fa-hand-holding-usd"></i> Apply for Loan
+    </a>
+    <a href="communities.html" class="quick-access-btn">
+      <i class="fas fa-users"></i> Find Communities
+    </a>
+    <a href="trust1.html" class="quick-access-btn">
+      <i class="fas fa-shield-alt"></i> Check Trust Score
+    </a>
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-col">
+        <h3>SahayaChain</h3>
+        <p>Connecting communities through trust and technology. Together, we lend, borrow, and build a sustainable financial future.</p>
+      </div>
+      <div class="footer-col">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index-in.html">Home</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="communities.html">Communities</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="login3.html">Lender Login</a></li>
+          <li><a href="login2..html">Borrower Login</a></li>
+          <li><a href="communities-lend.html">Community Lending</a></li>
+          <li><a href="dashboard-borrow.html">Dashboard</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Contact Us</h3>
+        <ul>
+          <li>123 Loan Blvd, Citytown</li>
+          <li>Phone: +1 (234) 567-8900</li>
+          <li>Email: info@sahayachain.com</li>
+          <li>Hours: Mon-Fri 9am-5pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2025 SahayaChain. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar toggle on mobile
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('active');
+    }
+
+    // Navbar background change on scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 30) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+
+  <script src="main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize form validation
+      const contactForm = document.getElementById('contactForm');
+      
+      if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          // Simple validation
+          const name = document.getElementById('name').value;
+          const email = document.getElementById('email').value;
+          const message = document.getElementById('message').value;
+          
+          if (!name || !email || !message) {
+            alert('Please fill in all required fields.');
+            return;
+          }
+          
+          // Show success message (in real app, would submit to server)
+          alert('Thank you for your message! We will get back to you soon.');
+          contactForm.reset();
+        });
+      }
+      
+      // Update navigation based on login status
+      updateNavigation();
+    });
+    
+    // Update navigation based on login status
+    function updateNavigation() {
+      // Show/hide quick access buttons based on login status
+      const quickAccessButtons = document.getElementById('quickAccessButtons');
+      if (quickAccessButtons) {
+        quickAccessButtons.style.display = isLoggedIn() ? 'flex' : 'none';
+      }
+    }
+  </script>
+</body>
+
+</html>

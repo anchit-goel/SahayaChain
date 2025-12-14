@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply for Loan - SahayaChain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    body {
+      background-color: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    #navbar {
+      background-color: #07464c;
+      color: white;
+      padding: 1rem 2rem;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo-container img {
+      width: 35px;
+      height: 35px;
+      margin-right: 10px;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    #navLinks {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    #navLinks a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    #navLinks a:hover {
+      color: #3be4d1;
+    }
+    
+    #navLinks a.active {
+      color: #3be4d1;
+      border-bottom: 2px solid #3be4d1;
+    }
+    
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    
+    .menu-toggle div {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      margin: 3px 0;
+      transition: 0.3s;
+    }
+    
+    .spacer {
+      height: 5rem;
+    }
+    
+    .application-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .page-title {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .page-title h1 {
+      color: #07464c;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .page-title p {
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .application-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    
+    .application-steps::before {
+      content: "";
+      position: absolute;
+      top: 24px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #ddd;
+      z-index: 1;
+    }
+    
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .step-number {
+      width: 50px;
+      height: 50px;
+      background-color: white;
+      border: 2px solid #ddd;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #666;
+    }
+    
+    .step.active .step-number {
+      background-color: #3be4d1;
+      border-color: #3be4d1;
+      color: #07464c;
+    }
+    
+    .step-label {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: 500;
+    }
+    
+    .step.active .step-label {
+      color: #07464c;
+      font-weight: 600;
+    }
+    
+    .form-section {
+      display: none;
+    }
+    
+    .form-section.active {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #07464c;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+    
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .btn-secondary {
+      background-color: #e9ecef;
+      color: #495057;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #dee2e6;
+    }
+    
+    .btn-primary {
+      background-color: #3be4d1;
+      color: #07464c;
+    }
+    
+    .btn-primary:hover {
+      background-color: #2ad1be;
+    }
+    
+    .alert {
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 5px;
+      background-color: #f8f9fa;
+      border-left: 4px solid #3be4d1;
+      color: #07464c;
+    }
+    
+    #trustScoreAlert {
+      display: flex;
+      align-items: center;
+      background-color: #e6f7f5;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .trust-score-info {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    
+    .trust-badge {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: conic-gradient(#3be4d1 0% var(--score-percent, 78%), #e0e0e0 var(--score-percent, 78%) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-right: 1.5rem;
+      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(59, 228, 209, 0.2);
+    }
+    
+    .trust-badge::before {
+      content: '';
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background-color: white;
+    }
+    
+    .trust-score {
+      position: relative;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #07464c;
+    }
+    
+    .trust-label {
+      position: relative;
+      font-size: 0.7rem;
+      color: #07464c;
+      text-transform: uppercase;
+    }
+    
+    .trust-details {
+      flex: 1;
+    }
+    
+    .trust-details h5 {
+      margin-bottom: 0.5rem;
+      color: #07464c;
+    }
+    
+    .trust-details p {
+      margin-bottom: 0.8rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .success-message {
+      text-align: center;
+      margin: 2rem 0;
+    }
+    
+    .success-message i {
+      font-size: 4rem;
+      color: #28a745;
+      margin-bottom: 1rem;
+    }
+    
+    .success-message h2 {
+      color: #07464c;
+      margin-bottom: 1rem;
+    }
+    
+    .success-message p {
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
+      }
+      
+      #navLinks {
+        position: fixed;
+        top: 4rem;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        background-color: #07464c;
+        padding: 1rem 0;
+        gap: 0;
+        transform: translateY(-150%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 999;
+      }
+      
+      #navLinks.active {
+        transform: translateY(0);
+      }
+      
+      #navLinks a {
+        width: 100%;
+        text-align: center;
+        padding: 1rem 0;
+      }
+      
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .step-label {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="navbar">
+    <div class="logo-container">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/link--v1.png" alt="Logo">
+      <div class="logo">SahayaChain</div>
+    </div>
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <nav id="navLinks">
+      <a href="index-in.html">Home</a>
+      <a href="dashboard-borrow.html">Dashboard</a>
+      <a href="communities.html">Communities</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </nav>
+  </header>
+  
+  <div class="spacer"></div>
+  
+  <div class="page-title">
+    <h1>Loan Application</h1>
+    <p>Complete the application form to apply for a loan through SahayaChain</p>
+  </div>
+  
+  <div class="application-container">
+    <div class="application-steps">
+      <div class="step active" id="step1">
+        <div class="step-number">1</div>
+        <div class="step-label">Personal Details</div>
+      </div>
+      <div class="step" id="step2">
+        <div class="step-number">2</div>
+        <div class="step-label">Loan Details</div>
+      </div>
+      <div class="step" id="step3">
+        <div class="step-number">3</div>
+        <div class="step-label">Verification</div>
+      </div>
+      <div class="step" id="step4">
+        <div class="step-number">4</div>
+        <div class="step-label">Confirmation</div>
+      </div>
+    </div>
+    
+    <div class="alert" id="trustScoreAlert">
+      <div class="trust-score-info">
+        <div class="trust-badge" id="trustBadge">
+          <span class="trust-score" id="trustScore">--</span>
+          <span class="trust-label">Trust Score</span>
+        </div>
+        <div class="trust-details">
+          <h5>Your Trust Score: <span id="trustLevel">--</span></h5>
+          <p>A higher trust score increases your loan eligibility and may qualify you for better interest rates.</p>
+          <a href="trust1.html" class="btn btn-outline-primary btn-sm">View Details</a>
+        </div>
+      </div>
+    </div>
+    
+    <form id="loanApplicationForm">
+      <!-- Step 1: Personal Details -->
+      <div class="form-section active" id="section1">
+        <h3 class="mb-3">Personal Information</h3>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="state">State</label>
+            <input type="text" id="state" name="state" required>
+          </div>
+        </div>
+        
+        <div class="button-group">
+          <div></div> <!-- Empty div for spacing -->
+          <button type="button" class="btn btn-primary" onclick="nextStep(1)">Next</button>
+        </div>
+      </div>
+      
+      <!-- Step 2: Loan Details -->
+      <div class="form-section" id="section2">
+        <h3 class="mb-3">Loan Information</h3>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="loanAmount">Loan Amount (₹)</label>
+            <input type="number" id="loanAmount" name="loanAmount" min="1000" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="loanTerm">Loan Term (Months)</label>
+            <select id="loanTerm" name="loanTerm" required>
+              <option value="">Select Term</option>
+              <option value="3">3 months</option>
+              <option value="6">6 months</option>
+              <option value="12">12 months</option>
+              <option value="24">24 months</option>
+              <option value="36">36 months</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="community">Select Community</label>
+            <select id="community" name="community" required>
+              <option value="">Select Community</option>
+              <!-- Options will be loaded from JS -->
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="purpose">Loan Purpose</label>
+            <select id="purpose" name="purpose" required>
+              <option value="">Select Purpose</option>
+              <option value="business">Business</option>
+              <option value="education">Education</option>
+              <option value="medical">Medical</option>
+              <option value="housing">Housing</option>
+              <option value="personal">Personal</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Detailed Description</label>
+          <textarea id="description" name="description" rows="4" required placeholder="Explain how you plan to use the loan..."></textarea>
+        </div>
+        
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Previous</button>
+          <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next</button>
+        </div>
+      </div>
+      
+      <!-- Step 3: Verification -->
+      <div class="form-section" id="section3">
+        <h3 class="mb-3">Basic Verification</h3>
+        
+        <div class="form-group">
+          <label for="idProof">Aadhar Number</label>
+          <input type="text" id="idProof" name="idProof" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="employmentStatus">Employment Status</label>
+          <select id="employmentStatus" name="employmentStatus" required>
+            <option value="">Select Status</option>
+            <option value="employed">Employed</option>
+            <option value="self-employed">Self-Employed</option>
+            <option value="business">Business Owner</option>
+            <option value="student">Student</option>
+            <option value="unemployed">Unemployed</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <div style="display: flex; align-items: flex-start;">
+            <input type="checkbox" id="terms" name="terms" required style="width: auto; margin-right: 10px; margin-top: 5px;">
+            <label for="terms" style="font-weight: normal;">I agree to the terms and conditions of SahayaChain and authorize the platform to verify my information.</label>
+          </div>
+        </div>
+        
+        <div class="button-group">
+          <button type="button" class="btn btn-secondary" onclick="prevStep(3)">Previous</button>
+          <button type="button" class="btn btn-primary" onclick="submitApplication()">Submit Application</button>
+        </div>
+      </div>
+      
+      <!-- Step 4: Confirmation -->
+      <div class="form-section" id="section4">
+        <div class="success-message">
+          <i class="fas fa-check-circle"></i>
+          <h2>Application Submitted!</h2>
+          <p>Your loan application has been successfully submitted for review. You will receive a notification once it's processed.</p>
+          <p>Application Reference: <strong id="referenceNumber">LN-2023-</strong></p>
+          <a href="dashboard-borrow.html" class="btn btn-primary">Go to Dashboard</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <script src="data.js"></script>
+  <script src="main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Check if user is logged in
+      if (!isLoggedIn()) {
+        window.location.href = 'login3.html';
+        return;
+      }
+      
+      // Handle logout
+      document.getElementById('logoutLink').addEventListener('click', function(e) {
+        e.preventDefault();
+        logoutUser();
+      });
+      
+      // Load user data
+      const userData = getUserData();
+      
+      // Pre-fill user data in form
+      if (userData) {
+        if (userData.name) document.getElementById('fullName').value = userData.name;
+        if (userData.email) document.getElementById('email').value = userData.email;
+        if (userData.phone) document.getElementById('phone').value = userData.phone;
+      }
+      
+      // Load user communities
+      try {
+        const communities = await getCommunities();
+        const communitySelect = document.getElementById('community');
+        
+        // Clear existing options
+        communitySelect.innerHTML = '<option value="">Select Community</option>';
+        
+        // Add community options
+        communities.forEach(community => {
+          const option = document.createElement('option');
+          option.value = community._id;
+          option.textContent = community.name;
+          communitySelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error loading communities:', error);
+      }
+      
+      // Load user trust score
+      try {
+        const trustData = await getUserTrustScore();
+        
+        // Update trust score display
+        const trustScore = document.getElementById('trustScore');
+        const trustLevel = document.getElementById('trustLevel');
+        const trustBadge = document.getElementById('trustBadge');
+        
+        if (trustScore) trustScore.textContent = trustData.score;
+        if (trustLevel) trustLevel.textContent = trustData.level;
+        
+        // Update trust badge with correct percentage
+        if (trustBadge) {
+          trustBadge.style.setProperty('--score-percent', `${trustData.score}%`);
+        }
+      } catch (error) {
+        console.error('Error loading trust score:', error);
+      }
+    });
+    
+    // Function to navigate between steps
+    function nextStep(currentStep) {
+      // Hide current section
+      document.getElementById(`section${currentStep}`).classList.remove('active');
+      // Show next section
+      document.getElementById(`section${currentStep + 1}`).classList.add('active');
+      // Update steps indicator
+      document.getElementById(`step${currentStep}`).classList.remove('active');
+      document.getElementById(`step${currentStep + 1}`).classList.add('active');
+      
+      // Scroll to top of form
+      document.querySelector('.application-container').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    function prevStep(currentStep) {
+      // Hide current section
+      document.getElementById(`section${currentStep}`).classList.remove('active');
+      // Show previous section
+      document.getElementById(`section${currentStep - 1}`).classList.add('active');
+      // Update steps indicator
+      document.getElementById(`step${currentStep}`).classList.remove('active');
+      document.getElementById(`step${currentStep - 1}`).classList.add('active');
+      
+      // Scroll to top of form
+      document.querySelector('.application-container').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Function to submit application
+    function submitApplication() {
+      // Validate form fields
+      const idProof = document.getElementById('idProof').value;
+      const employmentStatus = document.getElementById('employmentStatus').value;
+      const terms = document.getElementById('terms').checked;
+      
+      if (!idProof || !employmentStatus || !terms) {
+        alert('Please fill all required fields and accept the terms and conditions.');
+        return;
+      }
+      
+      // Collect form data
+      const loanData = {
+        fullName: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        loanAmount: document.getElementById('loanAmount').value,
+        loanTerm: document.getElementById('loanTerm').value,
+        community: document.getElementById('community').value,
+        purpose: document.getElementById('purpose').value,
+        description: document.getElementById('description').value,
+        idProof: idProof,
+        employmentStatus: employmentStatus
+      };
+      
+      try {
+        // Submit loan application using the applyForLoan function from main.js
+        applyForLoan(loanData).then(loan => {
+          console.log('Loan application submitted:', loan);
+          
+          // Show success section
+          document.querySelectorAll('.form-section').forEach(section => {
+            section.classList.remove('active');
+          });
+          document.getElementById('section4').classList.add('active');
+          
+          // Update steps indicator
+          document.querySelectorAll('.step').forEach(step => {
+            step.classList.remove('active');
+          });
+          document.getElementById('step4').classList.add('active');
+          
+          // Generate reference number
+          const refNumber = loan._id || ('LOAN-' + Date.now().toString().slice(-8));
+          document.getElementById('referenceNumber').textContent = refNumber;
+        }).catch(error => {
+          console.error('Error applying for loan:', error);
+          alert('There was an error submitting your application. Please try again.');
+        });
+      } catch (error) {
+        console.error('Error applying for loan:', error);
+        alert('There was an error submitting your application. Please try again.');
+      }
+    }
+    
+    // Mobile menu toggle
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('active');
+    }
+  </script>
+</body>
+</html> 

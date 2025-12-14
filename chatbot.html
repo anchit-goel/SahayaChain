@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SahayaChain Financial Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background-color: #f5f5f5;
+      overflow: hidden;
+    }
+
+    .chatbot-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .chatbot-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      background-color: #0c1c2c;
+      color: white;
+    }
+
+    .chatbot-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chatbot-title h2 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .chatbot-title i {
+      font-size: 20px;
+      color: #3be4d1;
+    }
+
+    .close-chatbot {
+      background: none;
+      border: none;
+      color: #ccc;
+      font-size: 20px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .close-chatbot:hover {
+      color: white;
+    }
+
+    .chatbot-messages {
+      flex: 3;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .chatbot-message {
+      max-width: 80%;
+      padding: 12px 15px;
+      border-radius: 18px;
+      line-height: 1.4;
+      font-size: 14px;
+      position: relative;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background-color: #f0f0f0;
+      border-bottom-left-radius: 4px;
+    }
+
+    .bot::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      bottom: 0;
+      width: 10px;
+      height: 10px;
+      background-color: #f0f0f0;
+      clip-path: polygon(0 0, 100% 100%, 100% 0);
+    }
+
+    .user {
+      align-self: flex-end;
+      background-color: #0c1c2c;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .user::after {
+      content: '';
+      position: absolute;
+      right: -5px;
+      bottom: 0;
+      width: 10px;
+      height: 10px;
+      background-color: #0c1c2c;
+      clip-path: polygon(0 0, 0 100%, 100% 100%);
+    }
+
+    .chatbot-suggestions {
+      padding: 10px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background-color: #f5f5f5;
+      border-top: 1px solid #eeeeee;
+      max-height: 25%;
+      overflow-y: auto;
+      align-content: flex-start;
+    }
+
+    .suggestion-button {
+      padding: 8px 12px;
+      background-color: white;
+      border: 1px solid #dddddd;
+      border-radius: 18px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      white-space: nowrap;
+    }
+
+    .suggestion-button:hover {
+      background-color: #f0f0f0;
+    }
+
+    .chatbot-form {
+      display: flex;
+      padding: 15px;
+      border-top: 1px solid #eeeeee;
+      background-color: white;
+    }
+
+    .chatbot-input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 1px solid #dddddd;
+      border-radius: 24px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .chatbot-input:focus {
+      border-color: #3be4d1;
+    }
+
+    .send-button {
+      width: 40px;
+      height: 40px;
+      margin-left: 10px;
+      background-color: #3be4d1;
+      color: #0c1c2c;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .send-button:hover {
+      background-color: #2ad1be;
+    }
+
+    .typing-indicator {
+      display: none;
+      align-self: flex-start;
+      background-color: #f0f0f0;
+      padding: 10px 15px;
+      border-radius: 18px;
+      margin-bottom: 10px;
+    }
+
+    .typing-indicator span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: #999;
+      border-radius: 50%;
+      margin-right: 5px;
+      animation: typing 1.4s infinite ease-in-out;
+    }
+
+    .typing-indicator span:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.4s;
+      margin-right: 0;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-5px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="chatbot-container" id="chatbotContainer">
+    <div class="chatbot-header">
+      <div class="chatbot-title">
+        <i class="fas fa-robot"></i>
+        <h2>Financial Assistant (DeepSeek AI)</h2>
+      </div>
+      <button class="close-chatbot" id="closeChatbot">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="chatbot-messages" id="chatbotMessages">
+      <!-- Messages will be added here dynamically -->
+      <div class="typing-indicator" id="typingIndicator">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    
+    <div class="chatbot-suggestions" id="chatbotSuggestions">
+      <!-- Suggestions will be added here dynamically -->
+    </div>
+    
+    <form class="chatbot-form" id="chatbotForm">
+      <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your question here..." autocomplete="off">
+      <button type="submit" class="send-button">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </form>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    // Conversation history to maintain context
+    let conversationHistory = [];
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      // Close button to hide iframe in parent page
+      const closeChatbot = document.getElementById('closeChatbot');
+      if (closeChatbot) {
+        closeChatbot.addEventListener('click', function() {
+          window.parent.postMessage('closeChatbot', '*');
+        });
+      }
+      
+      // Load suggestions when page loads
+      loadChatbotSuggestions();
+      
+      // Show welcome message
+      const welcomeMessage = 'Hello! I\'m your SahayaChain financial assistant powered by DeepSeek AI. I can help with information about loans, communities, trust scores, and more. How can I help you today?';
+      addChatbotMessage(welcomeMessage, 'bot');
+      
+      // Add initial message to conversation history
+      conversationHistory.push({
+        role: "assistant",
+        content: welcomeMessage
+      });
+      
+      // Handle form submission
+      const chatbotForm = document.getElementById('chatbotForm');
+      if (chatbotForm) {
+        chatbotForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const messageInput = document.getElementById('chatbotInput');
+          const message = messageInput.value.trim();
+          
+          if (message) {
+            // Display user message
+            addChatbotMessage(message, 'user');
+            messageInput.value = '';
+            
+            // Add to conversation history
+            conversationHistory.push({
+              role: "user",
+              content: message
+            });
+            
+            // Show typing indicator
+            const typingIndicator = document.getElementById('typingIndicator');
+            typingIndicator.style.display = 'block';
+            
+            try {
+              // Call DeepSeek API
+              const response = await callDeepSeekAPI(message);
+              
+              // Hide typing indicator
+              typingIndicator.style.display = 'none';
+              
+              // Add response to chat
+              addChatbotMessage(response, 'bot');
+              
+              // Add to conversation history
+              conversationHistory.push({
+                role: "assistant",
+                content: response
+              });
+              
+              // Limit conversation history to last 10 messages to avoid token limits
+              if (conversationHistory.length > 10) {
+                conversationHistory = conversationHistory.slice(conversationHistory.length - 10);
+              }
+            } catch (error) {
+              console.error('Error calling DeepSeek API:', error);
+              typingIndicator.style.display = 'none';
+              
+              // Fallback response if API fails
+              const fallbackResponse = 'I\'m having trouble connecting to my knowledge base. Please try again later.';
+              addChatbotMessage(fallbackResponse, 'bot');
+              
+              // Add to conversation history
+              conversationHistory.push({
+                role: "assistant",
+                content: fallbackResponse
+              });
+            }
+          }
+        });
+      }
+      
+      // Handle suggestion clicks
+      document.addEventListener('click', async function(e) {
+        if (e.target.classList.contains('suggestion-button')) {
+          const message = e.target.textContent;
+          
+          // Display user message
+          addChatbotMessage(message, 'user');
+          
+          // Add to conversation history
+          conversationHistory.push({
+            role: "user",
+            content: message
+          });
+          
+          // Show typing indicator
+          const typingIndicator = document.getElementById('typingIndicator');
+          typingIndicator.style.display = 'block';
+          
+          try {
+            // Call DeepSeek API
+            const response = await callDeepSeekAPI(message);
+            
+            // Hide typing indicator
+            typingIndicator.style.display = 'none';
+            
+            // Add response to chat
+            addChatbotMessage(response, 'bot');
+            
+            // Add to conversation history
+            conversationHistory.push({
+              role: "assistant",
+              content: response
+            });
+            
+            // Limit conversation history
+            if (conversationHistory.length > 10) {
+              conversationHistory = conversationHistory.slice(conversationHistory.length - 10);
+            }
+          } catch (error) {
+            console.error('Error calling DeepSeek API:', error);
+            typingIndicator.style.display = 'none';
+            
+            // Fallback response if API fails
+            const fallbackResponse = 'I\'m having trouble connecting to my knowledge base. Please try again later.';
+            addChatbotMessage(fallbackResponse, 'bot');
+            
+            // Add to conversation history
+            conversationHistory.push({
+              role: "assistant",
+              content: fallbackResponse
+            });
+          }
+        }
+      });
+    });
+    
+    // Function to call DeepSeek API
+    async function callDeepSeekAPI(userMessage) {
+      // You should replace these with your actual DeepSeek API endpoint and key
+      const apiEndpoint = 'https://api.deepseek.com/v1/chat/completions';
+      const apiKey = 'YOUR_DEEPSEEK_API_KEY'; // Replace with your actual API key
+      
+      // System message to provide context about SahayaChain
+      const systemMessage = {
+        role: "system",
+        content: `You are a helpful financial assistant for SahayaChain, a community-based finance platform that enables trusted P2P lending within verified communities. 
+        
+        Key information about SahayaChain:
+        - Users join communities based on location or shared interests
+        - Each user and community has a trust score based on repayment history and verification
+        - Interest rates range from 5% to 12% based on loan purpose, amount, and trust scores
+        - Verification process includes ID verification, address proof, and social verification
+        - Repayments can be made through UPI, net banking, or wallet transfers
+        - Trust scores are calculated based on identity verification, community participation, repayment history, and references
+        
+        Respond concisely and helpfully to user questions about SahayaChain services, focusing on financial advice, loan information, community details, and platform features.`
+      };
+      
+      // Construct the API request with full conversation history
+      const requestBody = {
+        model: "deepseek-chat",
+        messages: [systemMessage, ...conversationHistory],
+        temperature: 0.7,
+        max_tokens: 500
+      };
+      
+      try {
+        // For demonstration purposes, we simulate the API call
+        // In a production environment, uncomment the fetch code below
+        
+        /*
+        const response = await fetch(apiEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify(requestBody)
+        });
+        
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+        
+        const data = await response.json();
+        return data.choices[0].message.content;
+        */
+        
+        // Simulate API response with a delay
+        return await simulateDeepSeekResponse(userMessage);
+      } catch (error) {
+        console.error('Error calling DeepSeek API:', error);
+        throw error;
+      }
+    }
+    
+    // Function to simulate DeepSeek API response for development
+    // Remove this in production and use the actual API call
+    async function simulateDeepSeekResponse(message) {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
+      
+      const lowerMessage = message.toLowerCase();
+      
+      if (lowerMessage.includes('loan') && lowerMessage.includes('apply')) {
+        return "To apply for a loan with SahayaChain, first join a verified community that matches your needs. Once you're a member, navigate to \"Apply for Loan\" in your dashboard, specify the amount needed (between ₹5,000-₹50,000), purpose, and preferred repayment term. Our AI-powered system will analyze your trust score and community standing to generate personalized loan terms. Community members will then have the opportunity to fund your loan request.";
+      } else if (lowerMessage.includes('interest rate') || lowerMessage.includes('rates')) {
+        return "SahayaChain offers competitive interest rates ranging from 5-12%, significantly lower than traditional moneylenders (24-60%). Your personal rate depends on several factors: loan purpose (productive uses get better rates), trust score (higher scores unlock lower rates), loan amount and term (larger, longer-term loans may have different structures), and community risk profile. The transparent blockchain ledger ensures all terms are documented and unchangeable once agreed upon.";
+      } else if (lowerMessage.includes('join community') || lowerMessage.includes('how to join')) {
+        return "To join a SahayaChain community: 1) Browse verified communities by location, interest, or profession on the Communities page. 2) Select one that aligns with your needs and click \"Join Community\". 3) Complete the verification process, which typically includes identity verification (Aadhaar, PAN card), address proof, and references from existing members if required. 4) Once approved by community moderators, you gain access to all community features including the ability to request and fund loans.";
+      } else if (lowerMessage.includes('repayment') || lowerMessage.includes('pay back')) {
+        return "Loan repayments on SahayaChain are flexible and transparent. You can make payments via UPI, net banking, or wallet transfers through our secure payment gateway. The platform automatically calculates installments based on your loan terms and sends reminders before due dates. On-time payments significantly boost your trust score, while missed payments affect it negatively. You can view your repayment schedule and make payments directly from your dashboard, with all transactions recorded on the community blockchain ledger.";
+      } else if (lowerMessage.includes('verification') || lowerMessage.includes('verify')) {
+        return "SahayaChain's verification process creates trust within communities through multiple layers: 1) Basic verification requires government ID (Aadhaar/PAN) and address proof. 2) Enhanced verification includes employment/income documentation for higher borrowing limits. 3) Social verification involves endorsements from existing community members. 4) Ongoing verification builds through regular community participation and successful loan repayments. Each verification level unlocks greater platform benefits including higher loan amounts, better interest rates, and increased trust score.";
+      } else if (lowerMessage.includes('trust score') || lowerMessage.includes('rating')) {
+        return "Your SahayaChain trust score (0-100) is calculated using our proprietary algorithm that evaluates: 1) Verification level (25%) - how thoroughly your identity has been confirmed. 2) Repayment history (40%) - timeliness of past payments. 3) Community engagement (15%) - activity and standing within your communities. 4) Longevity (10%) - account age and consistent platform usage. 5) External data (10%) - optional traditional credit information. Your dashboard shows your current score and specific factors you can improve to increase it.";
+      } else if (lowerMessage.includes('blockchain') || lowerMessage.includes('ledger')) {
+        return "SahayaChain uses a secure, transparent blockchain ledger to record all community transactions. Each transaction creates a new block containing details like amount, parties involved, purpose, terms, and timestamp, plus a unique cryptographic hash linked to previous transactions. This creates an immutable record that prevents fraud and builds trust. You can access your community's blockchain ledger through your dashboard, viewing full transaction histories while personal identifying details remain encrypted for privacy.";
+      } else if (lowerMessage.includes('lending') || lowerMessage.includes('lend money')) {
+        return "To lend money on SahayaChain: 1) Navigate to the \"Lend\" section from your dashboard. 2) Browse lending opportunities filtered by community, risk level, interest rate, or term length. 3) Select the amount you wish to lend (minimum ₹1,000). 4) Choose your preferred interest rate and term length. 5) Review the borrower's profile, trust score, and purpose. 6) Confirm your lending offer. Once matched with a borrower, funds are transferred securely, and all repayments are automatically credited to your wallet with full transaction tracking through our blockchain ledger.";
+      } else if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+        return "Hello! I'm your SahayaChain financial assistant powered by DeepSeek AI. I can help with information about community loans, interest rates, verification processes, trust scores, or any other aspect of our platform. What specific information are you looking for today?";
+      } else {
+        return "I'm your SahayaChain financial assistant, powered by DeepSeek AI. I can provide information about our community-based finance platform, including loans, interest rates, joining communities, trust scores, verification processes, and blockchain ledger functionality. For specific assistance, please ask about a particular feature or process you're interested in, and I'll provide detailed guidance based on our latest platform capabilities.";
+      }
+    }
+    
+    // Add message to chat
+    function addChatbotMessage(message, sender) {
+      const chatbotMessages = document.getElementById('chatbotMessages');
+      const typingIndicator = document.getElementById('typingIndicator');
+      
+      if (!chatbotMessages) return;
+      
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `chatbot-message ${sender}`;
+      messageDiv.innerHTML = `<p>${message}</p>`;
+      
+      // Insert before typing indicator
+      chatbotMessages.insertBefore(messageDiv, typingIndicator);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+    
+    // Function to load chatbot suggestions
+    async function loadChatbotSuggestions() {
+      const suggestionsContainer = document.getElementById('chatbotSuggestions');
+      if (!suggestionsContainer) return;
+      
+      // Default suggestions focused on DeepSeek capabilities
+      const defaultSuggestions = [
+        "How do I apply for a loan?",
+        "What are your interest rates?",
+        "How do I join a community?",
+        "How do repayments work?",
+        "What is my trust score based on?",
+        "How does the blockchain ledger work?",
+        "How can I lend money to communities?"
+      ];
+      
+      populateSuggestions(defaultSuggestions);
+      
+      function populateSuggestions(suggestions) {
+        suggestionsContainer.innerHTML = '';
+        suggestions.forEach(suggestion => {
+          const button = document.createElement('button');
+          button.className = 'suggestion-button';
+          button.textContent = suggestion;
+          suggestionsContainer.appendChild(button);
+        });
+      }
+    }
+  </script>
+</body>
+</html> 

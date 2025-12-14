@@ -1,0 +1,2510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Blockchain Ledger - SahayaChain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    body {
+      background-color: #f5f8fa;
+      color: #0c1c2c;
+    }
+    
+    /* NAVBAR */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: #0c1c2c;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-container img {
+      width: 40px;
+      margin-right: 10px;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .menu-toggle div {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      margin: 4px 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #3be4d1;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
+      }
+
+      nav {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+        margin-top: 1rem;
+      }
+
+      nav.active {
+        display: flex;
+      }
+    }
+    
+    .spacer {
+      height: 80px;
+    }
+    
+    /* LEDGER PAGE STYLES */
+    .page-header {
+      background-color: #07464c;
+      color: white;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    
+    .page-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .page-header p {
+      font-size: 1.1rem;
+    }
+    
+    .ledger-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    .ledger-info {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .community-details {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .community-icon {
+      width: 64px;
+      height: 64px;
+      background-color: #e6f7f5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #07464c;
+    }
+    
+    .community-icon img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .community-text h2 {
+      color: #07464c;
+      margin-bottom: 0.25rem;
+    }
+    
+    .verification-badge {
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+    }
+    
+    .verification-verified {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .verification-unverified {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    
+    .trust-score {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .trust-score i {
+      color: #3be4d1;
+    }
+    
+    .trust-score strong {
+      color: #07464c;
+    }
+    
+    .ledger-statistics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .stat-box {
+      background-color: #f5f8fa;
+      border-radius: 8px;
+      padding: 1rem;
+      flex: 1;
+      min-width: 150px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #07464c;
+      margin-bottom: 0.25rem;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .blockchain-info {
+      background-color: #f1f8ff;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .blockchain-info h3 {
+      color: #07464c;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .blockchain-info p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 0.5rem;
+    }
+    
+    .hash-value {
+      font-family: monospace;
+      background-color: #e6f7f5;
+      padding: 0.5rem;
+      border-radius: 4px;
+      overflow-x: auto;
+      white-space: nowrap;
+      font-size: 0.8rem;
+    }
+    
+    .ledger-entries {
+      margin-top: 2rem;
+    }
+    
+    .ledger-entries h2 {
+      color: #07464c;
+      margin-bottom: 1rem;
+    }
+    
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .filter-group {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .filter-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #07464c;
+      font-size: 0.9rem;
+    }
+    
+    .filter-group select, 
+    .filter-group input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      outline: none;
+    }
+    
+    .filter-btn {
+      padding: 0.6rem 1rem;
+      background-color: #3be4d1;
+      color: #07464c;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .filter-btn:hover {
+      background-color: #2ad1be;
+    }
+    
+    .refresh-btn {
+      padding: 0.6rem 1rem;
+      background-color: #f1f1f1;
+      color: #07464c;
+      border: none;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .refresh-btn:hover {
+      background-color: #e0e0e0;
+    }
+    
+    .refresh-btn i {
+      font-size: 0.9rem;
+    }
+    
+    .refresh-btn.refreshing i {
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .block-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .block-item {
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .block-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #07464c;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+    }
+    
+    .block-number {
+      font-weight: 600;
+    }
+    
+    .block-timestamp {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    .block-toggle {
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+    }
+    
+    .block-toggle.open {
+      transform: rotate(180deg);
+    }
+    
+    .block-content {
+      padding: 1.5rem;
+      display: none;
+    }
+    
+    .block-content.open {
+      display: block;
+    }
+    
+    .transaction-info {
+      margin-bottom: 1.5rem;
+    }
+    
+    .transaction-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .transaction-label {
+      min-width: 120px;
+      font-weight: 500;
+      color: #07464c;
+    }
+    
+    .transaction-value {
+      flex: 1;
+    }
+    
+    .transaction-type {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background-color: #e6f7f5;
+      border-radius: 20px;
+      color: #07464c;
+      font-weight: 500;
+    }
+    
+    .transaction-amount {
+      font-weight: 600;
+      color: #07464c;
+    }
+    
+    .transaction-status {
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+    
+    .status-completed {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .status-pending {
+      background-color: #fff8e1;
+      color: #f57f17;
+    }
+    
+    .status-approved {
+      background-color: #e1f5fe;
+      color: #0277bd;
+    }
+    
+    .status-rejected {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    
+    .block-hashes {
+      background-color: #f9f9f9;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+    }
+    
+    .hash-row {
+      margin-bottom: 0.5rem;
+    }
+    
+    .hash-label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 0.25rem;
+      color: #07464c;
+    }
+    
+    .transaction-details {
+      background-color: #f9f9f9;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    
+    .transaction-details h4 {
+      color: #07464c;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+    
+    .detail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .detail-item {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    
+    .detail-label {
+      min-width: 120px;
+      font-weight: 500;
+      color: #07464c;
+    }
+    
+    .detail-value {
+      flex: 1;
+    }
+    
+    .loading-indicator {
+      text-align: center;
+      padding: 2rem;
+      font-size: 1.1rem;
+      color: #666;
+    }
+    
+    .spinner {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(0,0,0,0.1);
+      border-radius: 50%;
+      border-top-color: #3be4d1;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .error-message {
+      text-align: center;
+      padding: 2rem;
+      color: #c62828;
+    }
+    
+    .error-message i {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .go-back-btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background-color: #3be4d1;
+      color: #07464c;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      margin-top: 1rem;
+    }
+    
+    .go-back-btn:hover {
+      background-color: #2ad1be;
+    }
+    
+    footer {
+      background-color: #0c1c2c;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+    }
+    
+    /* ENHANCED LEDGER STYLES */
+    .additional-community-info {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e6e6e6;
+    }
+    
+    .additional-community-info h3 {
+      color: #07464c;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+    
+    .community-details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      background-color: #f5f8fa;
+      border-radius: 6px;
+    }
+    
+    .detail-label {
+      font-weight: 500;
+      color: #666;
+      min-width: 120px;
+    }
+    
+    .detail-label i {
+      color: #3be4d1;
+      margin-right: 0.5rem;
+    }
+    
+    .block-list {
+      margin-top: 1.5rem;
+    }
+    
+    .block-item {
+      background-color: white;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .block-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .block-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.5rem;
+      background-color: #f5f8fa;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    
+    .block-id {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .block-label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .block-value {
+      font-weight: 600;
+      color: #07464c;
+    }
+    
+    .block-timestamp {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    
+    .timestamp-date {
+      font-weight: 500;
+      color: #07464c;
+    }
+    
+    .timestamp-time {
+      font-size: 0.8rem;
+      color: #666;
+    }
+    
+    .block-content {
+      display: flex;
+      justify-content: space-between;
+      padding: 1.5rem;
+      gap: 1.5rem;
+    }
+    
+    .transaction-details {
+      flex: 1;
+    }
+    
+    .transaction-details h3 {
+      color: #07464c;
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
+    
+    .transaction-details p {
+      color: #666;
+      margin-bottom: 1rem;
+    }
+    
+    .transaction-parties {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .party-from, .party-to {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: #f5f8fa;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+    
+    .party-from i, .party-to i {
+      color: #07464c;
+      font-size: 1.2rem;
+    }
+    
+    .transaction-arrow {
+      color: #3be4d1;
+    }
+    
+    .transaction-amount {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      min-width: 150px;
+    }
+    
+    .amount-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #07464c;
+      margin-bottom: 0.5rem;
+    }
+    
+    .amount-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    
+    .status-completed {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .status-pending {
+      background-color: #fff8e1;
+      color: #f57f17;
+    }
+    
+    .status-approved {
+      background-color: #e1f5fe;
+      color: #0277bd;
+    }
+    
+    .status-rejected {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    
+    .block-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1.5rem;
+      background-color: #f5f8fa;
+      border-top: 1px solid #e6e6e6;
+    }
+    
+    .hash-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    
+    .hash-label {
+      color: #666;
+    }
+    
+    .hash-value {
+      color: #07464c;
+      background-color: rgba(59, 228, 209, 0.1);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+    
+    .view-details-btn {
+      color: #3be4d1;
+      cursor: pointer;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    
+    .view-details-btn:hover {
+      color: #2ad1be;
+      text-decoration: underline;
+    }
+    
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .filter-group label {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+    
+    .filter-group select,
+    .filter-group input {
+      padding: 0.8rem;
+      border: 1px solid #e6e6e6;
+      border-radius: 8px;
+      background-color: #f8f9fa;
+    }
+    
+    .filter-btn {
+      align-self: flex-end;
+      padding: 0.8rem 1.5rem;
+      background-color: #3be4d1;
+      color: #07464c;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 1.5rem;
+    }
+    
+    .refresh-btn {
+      align-self: flex-end;
+      padding: 0.8rem 1.5rem;
+      background-color: #f5f8fa;
+      color: #07464c;
+      border: 1px solid #e6e6e6;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .filter-btn:hover {
+      background-color: #2ad1be;
+    }
+    
+    .refresh-btn:hover {
+      background-color: #e6f7f5;
+    }
+    
+    .refresh-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #07464c;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 1000;
+      animation: fadeInOut 3s ease;
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(20px); }
+      10% { opacity: 1; transform: translateY(0); }
+      90% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(20px); }
+    }
+    
+    @media (max-width: 768px) {
+      .block-content {
+        flex-direction: column;
+      }
+      
+      .transaction-amount {
+        align-items: flex-start;
+        margin-top: 1rem;
+      }
+      
+      .community-details-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .filter-group {
+        min-width: 100%;
+      }
+      
+      .filter-btn, .refresh-btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+      }
+    }
+    
+    /* Enhanced Community Information Section */
+    .additional-community-info {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .community-details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .community-detail-card {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 1.2rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .community-detail-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .detail-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    
+    .detail-card-icon {
+      width: 40px;
+      height: 40px;
+      background-color: rgba(59, 228, 209, 0.15);
+      color: #07464c;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    
+    .detail-card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #07464c;
+    }
+    
+    .detail-card-content {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.5;
+    }
+    
+    .community-chart-section {
+      margin-top: 2rem;
+    }
+    
+    .chart-container {
+      width: 100%;
+      height: 400px;
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    
+    .chart-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-size: 1.1rem;
+    }
+    
+    .trust-factor-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .trust-factor-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+      text-align: center;
+    }
+    
+    .trust-factor-card:hover {
+      transform: translateY(-3px);
+    }
+    
+    .factor-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin: 0 auto 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    
+    .repayment-icon {
+      background-color: rgba(52, 199, 89, 0.15);
+      color: #34c759;
+    }
+    
+    .activity-icon {
+      background-color: rgba(48, 179, 255, 0.15);
+      color: #30b3ff;
+    }
+    
+    .verification-icon {
+      background-color: rgba(255, 204, 0, 0.15);
+      color: #ffcc00;
+    }
+    
+    .longevity-icon {
+      background-color: rgba(144, 94, 150, 0.15);
+      color: #905e96;
+    }
+    
+    .factor-name {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      color: #07464c;
+    }
+    
+    .factor-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #07464c;
+      margin-bottom: 0.5rem;
+    }
+    
+    .factor-details {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .filter-summary {
+      background-color: #f5f8fa;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .filter-summary p {
+      margin: 0;
+      color: #07464c;
+      font-size: 0.9rem;
+    }
+
+    .clear-filters-btn {
+      background-color: #fff;
+      color: #07464c;
+      border: 1px solid #ddd;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background-color 0.2s;
+    }
+
+    .clear-filters-btn:hover {
+      background-color: #f0f0f0;
+    }
+
+    .filtering-indicator {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .placeholder-block {
+      opacity: 0.6;
+    }
+
+    @media (max-width: 768px) {
+      .chart-container {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="navbar">
+    <div class="logo-container">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/link--v1.png" alt="Logo">
+      <div class="logo">SahayaChain</div>
+    </div>
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <nav id="navLinks">
+      <a href="index-in.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="communities.html">Communities</a>
+      <a href="trust1.html">Trust Score</a>
+      <a href="contact.html">Contact</a>
+      <a href="login3.html" id="loginLink">Sign In</a>
+      <a href="dashboard-borrow.html" id="dashboardLink" style="display: none;">Dashboard</a>
+      <a href="#" id="logoutLink" style="display: none;">Sign Out</a>
+    </nav>
+  </header>
+  
+  <div class="spacer"></div>
+  
+  <div class="page-header">
+    <h1>Community Blockchain Ledger</h1>
+    <p>Transparent and immutable record of all transactions in this community</p>
+  </div>
+  
+  <div class="ledger-container">
+    <!-- Loading indicator -->
+    <div id="loadingIndicator" class="loading-indicator">
+      <span class="spinner"></span> Loading ledger data...
+    </div>
+    
+    <!-- Error message (hidden by default) -->
+    <div id="errorMessage" class="error-message" style="display: none;">
+      <i class="fas fa-exclamation-circle"></i>
+      <p>Sorry, we couldn't load the ledger data for this community.</p>
+      <a href="communities.html" class="go-back-btn">Go Back to Communities</a>
+    </div>
+    
+    <!-- Community and Ledger Info (hidden by default) -->
+    <div id="ledgerContent" style="display: none;">
+      <div class="ledger-info">
+        <div class="community-details">
+          <div class="community-icon" id="communityIcon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="community-text">
+            <h2 id="communityName">Loading community...</h2>
+            <div class="trust-score">
+              <i class="fas fa-shield-alt"></i>
+              Trust Score: <strong id="communityTrustScore">--</strong>
+            </div>
+          </div>
+        </div>
+        
+        <div class="ledger-statistics">
+          <div class="stat-box">
+            <div class="stat-value" id="totalTransactions">--</div>
+            <div class="stat-label">Total Transactions</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="totalAmount">--</div>
+            <div class="stat-label">Total Value</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="totalBlocks">--</div>
+            <div class="stat-label">Blocks</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="avgBlockTime">--</div>
+            <div class="stat-label">Avg Block Time</div>
+          </div>
+        </div>
+        
+        <div class="blockchain-info">
+          <h3>Blockchain Information</h3>
+          <p>Last Updated: <span id="lastUpdated">Loading...</span></p>
+          <p>Latest Block: <span id="latestBlock">Loading...</span></p>
+          <p>Latest Block Hash: <span class="hash-value" id="latestBlockHash">Loading...</span></p>
+        </div>
+      </div>
+      
+      <!-- Enhanced Community Information Section -->
+      <div class="additional-community-info">
+        <h3 style="color: #07464c; margin-bottom: 1.5rem;">Community Profile</h3>
+        
+        <div class="community-details-grid">
+          <div class="community-detail-card">
+            <div class="detail-card-header">
+              <div class="detail-card-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="detail-card-title">Location</div>
+            </div>
+            <div class="detail-card-content" id="communityLocation">
+              Loading location information...
+            </div>
+          </div>
+          
+          <div class="community-detail-card">
+            <div class="detail-card-header">
+              <div class="detail-card-icon">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              <div class="detail-card-title">Established</div>
+            </div>
+            <div class="detail-card-content" id="communityEstablished">
+              Loading establishment date...
+            </div>
+          </div>
+          
+          <div class="community-detail-card">
+            <div class="detail-card-header">
+              <div class="detail-card-icon">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="detail-card-title">Leadership</div>
+            </div>
+            <div class="detail-card-content" id="communityLeadership">
+              Loading leadership information...
+            </div>
+          </div>
+          
+          <div class="community-detail-card">
+            <div class="detail-card-header">
+              <div class="detail-card-icon">
+                <i class="fas fa-bullseye"></i>
+              </div>
+              <div class="detail-card-title">Focus Area</div>
+            </div>
+            <div class="detail-card-content" id="communityFocus">
+              Loading community focus information...
+            </div>
+          </div>
+        </div>
+        
+        <div class="community-chart-section">
+          <h3 style="color: #07464c; margin-bottom: 1rem;">Transaction History</h3>
+          <div class="chart-container">
+            <div class="chart-placeholder" id="transactionChart">
+              <div>Loading transaction history chart...</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="trust-section">
+          <h3 style="color: #07464c; margin: 1.5rem 0 1rem;">Trust Factor Analysis</h3>
+          <div class="trust-factor-cards">
+            <div class="trust-factor-card">
+              <div class="factor-icon repayment-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="factor-name">Repayment</div>
+              <div class="factor-value" id="repaymentFactor">--</div>
+              <div class="factor-details">Based on successful loan repayments within the community</div>
+            </div>
+            
+            <div class="trust-factor-card">
+              <div class="factor-icon activity-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div class="factor-name">Activity</div>
+              <div class="factor-value" id="activityFactor">--</div>
+              <div class="factor-details">Based on transaction frequency and member engagement</div>
+            </div>
+            
+            <div class="trust-factor-card">
+              <div class="factor-icon verification-icon">
+                <i class="fas fa-id-card"></i>
+              </div>
+              <div class="factor-name">Verification</div>
+              <div class="factor-value" id="verificationFactor">--</div>
+              <div class="factor-details">Based on member verification processes and oversight</div>
+            </div>
+            
+            <div class="trust-factor-card">
+              <div class="factor-icon longevity-icon">
+                <i class="fas fa-hourglass-half"></i>
+              </div>
+              <div class="factor-name">Longevity</div>
+              <div class="factor-value" id="longevityFactor">--</div>
+              <div class="factor-details">Based on community age and stability over time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="ledger-entries">
+        <h2>Transaction Blocks</h2>
+        
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label for="typeFilter">Transaction Type</label>
+            <select id="typeFilter">
+              <option value="">All Types</option>
+              <option value="Loan Request">Loan Requests</option>
+              <option value="Loan Funding">Loan Funding</option>
+              <option value="Repayment">Repayments</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="statusFilter">Status</label>
+            <select id="statusFilter">
+              <option value="">All Statuses</option>
+              <option value="Completed">Completed</option>
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="searchFilter">Search (Name, ID, Hash)</label>
+            <input type="text" id="searchFilter" placeholder="Search transactions...">
+          </div>
+          <button type="button" class="filter-btn" onclick="applyFilters()">Apply Filters</button>
+          <button type="button" class="refresh-btn" onclick="manualRefresh()" title="Refresh Ledger Data">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+        
+        <div id="blockList" class="block-list">
+          <!-- Blocks will be rendered here by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <p>&copy; 2023 SahayaChain. All rights reserved.</p>
+  </footer>
+
+  <script src="main.js"></script>
+  <script src="data.js"></script>
+  <!-- Add Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Update navigation based on login status
+      updateNavigation();
+      
+      // Get community ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const communityId = urlParams.get('id');
+      
+      if (!communityId) {
+        showError('No community ID provided');
+        return;
+      }
+      
+      // Immediately hide loading indicator and show content
+      document.getElementById('loadingIndicator').style.display = 'none';
+      document.getElementById('ledgerContent').style.display = 'block';
+      
+      // Get community info directly from fallback
+      const communityInfo = getCommunityInfoFallback(communityId);
+      
+      // Update all UI elements directly
+      updateCommunityInfo(communityInfo);
+      
+      // Generate static blocks immediately
+      const ledgerData = await getLedgerDataForCommunity(communityId);
+      renderBlocks(ledgerData);
+      updateLedgerStatistics(ledgerData);
+      
+      // Generate and render the transaction chart
+      generateTransactionChart(ledgerData, communityId);
+      
+      // Handle logout
+      const logoutLink = document.getElementById('logoutLink');
+      if (logoutLink) {
+        logoutLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          logoutUser();
+        });
+      }
+    });
+
+    // Function to generate and render the transaction chart
+    function generateTransactionChart(ledgerData, communityId) {
+      const chartContainer = document.getElementById('transactionChart');
+      if (!chartContainer) return;
+      
+      // Clear the loading message
+      chartContainer.innerHTML = '';
+      
+      // Create canvas element for Chart.js
+      const canvas = document.createElement('canvas');
+      chartContainer.appendChild(canvas);
+      
+      // Get the last 6 months of data
+      const monthlyData = getMonthlyTransactionData(ledgerData.blocks, communityId);
+      
+      // Create the chart
+      const ctx = canvas.getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: monthlyData.labels,
+          datasets: [
+            {
+              label: 'Transaction Volume',
+              data: monthlyData.volumes,
+              backgroundColor: 'rgba(59, 228, 209, 0.5)',
+              borderColor: 'rgba(59, 228, 209, 1)',
+              borderWidth: 1,
+              yAxisID: 'y'
+            },
+            {
+              label: 'Transaction Count',
+              data: monthlyData.counts,
+              backgroundColor: 'rgba(7, 70, 76, 0.5)',
+              borderColor: 'rgba(7, 70, 76, 1)',
+              borderWidth: 1,
+              type: 'line',
+              yAxisID: 'y1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              type: 'linear',
+              position: 'left',
+              title: {
+                display: true,
+                text: 'Transaction Volume (₹)'
+              }
+            },
+            y1: {
+              beginAtZero: true,
+              type: 'linear',
+              position: 'right',
+              grid: {
+                drawOnChartArea: false
+              },
+              title: {
+                display: true,
+                text: 'Transaction Count'
+              }
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: 'Community Transaction Activity',
+              font: {
+                size: 16
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  let label = context.dataset.label || '';
+                  if (label) {
+                    label += ': ';
+                  }
+                  if (context.datasetIndex === 0) {
+                    label += '₹' + context.raw.toLocaleString('en-IN');
+                  } else {
+                    label += context.raw;
+                  }
+                  return label;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Function to generate monthly transaction data for the chart
+    function getMonthlyTransactionData(blocks, communityId) {
+      // Get current date
+      const now = new Date();
+      
+      // Generate labels for the last 6 months
+      const labels = [];
+      for (let i = 5; i >= 0; i--) {
+        const month = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        labels.push(month.toLocaleString('en-US', { month: 'short', year: 'numeric' }));
+      }
+      
+      // If blocks data is insufficient, generate more realistic data based on community
+      let extendedBlocks = [...blocks];
+      if (blocks.length < 30) {
+        extendedBlocks = generateExtendedTransactionHistory(communityId);
+      }
+      
+      // Group transactions by month
+      const monthlyVolumes = Array(6).fill(0);
+      const monthlyCounts = Array(6).fill(0);
+      
+      extendedBlocks.forEach(block => {
+        const blockDate = new Date(block.timestamp);
+        const monthsAgo = now.getMonth() - blockDate.getMonth() + 
+          (now.getFullYear() - blockDate.getFullYear()) * 12;
+        
+        if (monthsAgo >= 0 && monthsAgo < 6) {
+          const index = 5 - monthsAgo; // Reverse index (most recent is last)
+          monthlyVolumes[index] += block.amount;
+          monthlyCounts[index]++;
+        }
+      });
+      
+      return {
+        labels: labels,
+        volumes: monthlyVolumes,
+        counts: monthlyCounts
+      };
+    }
+
+    // Function to generate extended transaction history for a community
+    function generateExtendedTransactionHistory(communityId) {
+      const now = new Date();
+      const blocks = [];
+      
+      // Community-specific parameters
+      const communityParams = {
+        'community-1': { // Delhi Farmers Collective
+          transactionsPerMonth: [18, 22, 25, 28, 32, 38],
+          avgAmount: 15000,
+          variance: 8000,
+          growth: 1.1
+        },
+        'community-2': { // Mumbai Women Entrepreneurs
+          transactionsPerMonth: [25, 32, 38, 42, 48, 56],
+          avgAmount: 22000,
+          variance: 10000,
+          growth: 1.15
+        },
+        'community-3': { // Chennai Fishermen Cooperative
+          transactionsPerMonth: [15, 18, 16, 20, 22, 25],
+          avgAmount: 12000,
+          variance: 6000,
+          growth: 1.05
+        },
+        'community-4': { // Bangalore Tech Startups
+          transactionsPerMonth: [12, 16, 20, 24, 32, 38],
+          avgAmount: 35000,
+          variance: 20000,
+          growth: 1.25
+        },
+        'default': {
+          transactionsPerMonth: [10, 12, 15, 18, 20, 24],
+          avgAmount: 10000,
+          variance: 5000,
+          growth: 1.08
+        }
+      }[communityId] || communityParams['default'];
+      
+      // Generate transactions for each month
+      for (let i = 5; i >= 0; i--) {
+        const monthStart = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const monthEnd = new Date(now.getFullYear(), now.getMonth() - i + 1, 0);
+        const transactionsThisMonth = communityParams.transactionsPerMonth[5 - i];
+        
+        for (let j = 0; j < transactionsThisMonth; j++) {
+          // Random date within the month
+          const randomDayOffset = Math.floor(Math.random() * (monthEnd.getDate()));
+          const transactionDate = new Date(monthStart);
+          transactionDate.setDate(monthStart.getDate() + randomDayOffset);
+          
+          // Random amount based on community parameters
+          const baseAmount = communityParams.avgAmount * Math.pow(communityParams.growth, 5 - i);
+          const amount = Math.round(baseAmount + (Math.random() * 2 - 1) * communityParams.variance);
+          
+          // Transaction types based on community
+          const transactionTypes = getTransactionTypesForCommunity(communityId);
+          const randomType = transactionTypes[Math.floor(Math.random() * transactionTypes.length)];
+          
+          // Status distribution
+          const statuses = ['Completed', 'Pending', 'Approved', 'Rejected'];
+          const statusWeights = [0.7, 0.1, 0.15, 0.05];
+          const status = weightedRandom(statuses, statusWeights);
+          
+          // Create block
+          blocks.push({
+            blockNumber: (10000 + blocks.length).toString(),
+            hash: generateRandomHash(),
+            previousHash: blocks.length > 0 ? blocks[blocks.length - 1].hash : '0'.repeat(64),
+            timestamp: transactionDate.getTime(),
+            transactionType: randomType,
+            sender: `User${Math.floor(Math.random() * 100) + 1}`,
+            recipient: `User${Math.floor(Math.random() * 100) + 1}`,
+            amount: amount,
+            status: status,
+            details: {
+              transactionId: `TX-${Date.now().toString(36)}-${Math.random().toString(36).substr(2, 5)}`,
+              purpose: getTransactionPurpose(randomType.toLowerCase().replace(' ', '_')),
+              createdDate: transactionDate.toISOString()
+            }
+          });
+        }
+      }
+      
+      // Sort by timestamp (newest first)
+      blocks.sort((a, b) => b.timestamp - a.timestamp);
+      
+      return blocks;
+    }
+    
+    // Helper function to get transaction types for a specific community
+    function getTransactionTypesForCommunity(communityId) {
+      const communityTypes = {
+        'community-1': ['Loan Request', 'Repayment', 'Equipment Purchase', 'Seed Funding', 'Crop Insurance'],
+        'community-2': ['Business Loan', 'Inventory Purchase', 'Mentorship Payment', 'Marketing Fund', 'Expansion Loan'],
+        'community-3': ['Boat Repair', 'Net Purchase', 'Emergency Fund', 'Repayment', 'Equipment Upgrade'],
+        'community-4': ['Seed Funding', 'Development Costs', 'Infrastructure', 'Marketing', 'Talent Acquisition'],
+        'default': ['Loan Request', 'Repayment', 'Community Fund', 'Emergency Payment', 'Membership Fee']
+      };
+      
+      return communityTypes[communityId] || communityTypes['default'];
+    }
+    
+    // Helper function for weighted random selection
+    function weightedRandom(items, weights) {
+      const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+      let random = Math.random() * totalWeight;
+      
+      for (let i = 0; i < items.length; i++) {
+        random -= weights[i];
+        if (random < 0) {
+          return items[i];
+        }
+      }
+      
+      return items[0]; // Fallback
+    }
+
+    async function getLedgerDataForCommunity(communityId) {
+      try {
+        // Get community info directly for consistent data
+        const communityInfo = getCommunityInfoFallback(communityId);
+        
+        // Generate more transactions for a fuller experience
+        const transactions = generateCommunityTransactions(communityId, 20); // Generate 20 transactions
+        
+        // Create block data from transactions
+        const blocks = transactions.map((transaction, index) => {
+          const blockNumber = (parseInt(communityInfo.latestBlock || '1000') - index).toString();
+          const dateObj = new Date(transaction.date);
+          
+          return {
+            blockNumber: blockNumber,
+            hash: transaction.hash || generateRandomHash(),
+            previousHash: index > 0 ? transactions[index - 1].hash || generateRandomHash() : '0'.repeat(64),
+            timestamp: dateObj.getTime(),
+            transactionType: transaction.description,
+            sender: transaction.sender,
+            recipient: transaction.receiver,
+            amount: transaction.amount,
+            status: transaction.status,
+            details: {
+              transactionId: transaction.id,
+              purpose: getTransactionPurpose(transaction.type),
+              createdDate: transaction.date
+            }
+          };
+        });
+        
+        // Calculate actual statistics from the transactions
+        const totalAmount = blocks.reduce((sum, block) => sum + block.amount, 0);
+        
+        // Return the ledger data including summary statistics
+        return {
+          blocks: blocks,
+          totalTransactions: communityInfo.totalTransactions || blocks.length.toString(),
+          totalAmount: communityInfo.totalAmount || formatCurrency(totalAmount),
+          totalBlocks: communityInfo.totalBlocks || (blocks.length + Math.floor(Math.random() * 50)).toString(),
+          avgBlockTime: communityInfo.avgBlockTime || (Math.random() * 2 + 2).toFixed(1) + 's'
+        };
+      } catch (error) {
+        console.error('Error generating ledger data:', error);
+        
+        // Fallback to community info if available, otherwise default values
+        const communityInfo = getCommunityInfoFallback(communityId);
+        return {
+          blocks: [],
+          totalTransactions: communityInfo.totalTransactions || '138',
+          totalAmount: communityInfo.totalAmount || '₹24.5 Lakhs',
+          totalBlocks: communityInfo.totalBlocks || '189',
+          avgBlockTime: communityInfo.avgBlockTime || '3.2s'
+        };
+      }
+    }
+
+    // Helper function to format currency
+    function formatCurrency(amount) {
+      if (amount >= 100000) {
+        return `₹${(amount / 100000).toFixed(1)} Lakhs`;
+      } else {
+        return `₹${amount.toLocaleString('en-IN')}`;
+      }
+    }
+
+    // Helper function to generate a random hash
+    function generateRandomHash() {
+      const characters = '0123456789abcdef';
+      let hash = '';
+      for (let i = 0; i < 64; i++) {
+        hash += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+      return hash;
+    }
+
+    // Get transaction purpose description
+    function getTransactionPurpose(type) {
+      switch (type) {
+        case 'loan_request':
+          return 'Funds requested for personal or business use within the community guidelines.';
+        case 'repayment':
+          return 'Repayment of an existing loan amount with applicable interest.';
+        case 'funding':
+          return 'Contribution to community loan pool to support fellow members.';
+        case 'equipment':
+          return 'Payment for shared equipment usage within the farming community.';
+        case 'business_loan':
+          return 'Funds for business expansion, marketing, or operational costs.';
+        case 'inventory':
+          return 'Purchase of inventory or raw materials for business use.';
+        case 'mentorship':
+          return 'Payment for professional mentorship and business guidance services.';
+        case 'boat_repair':
+          return 'Funds for essential repairs and maintenance of fishing vessels.';
+        case 'nets':
+          return 'Purchase or repair of fishing nets and related equipment.';
+        case 'emergency':
+          return 'Urgent financial support during adverse weather or emergency situations.';
+        case 'seed_funding':
+          return 'Initial funding for a new tech startup or product development.';
+        case 'development':
+          return 'Financing for software development or technical team expansion.';
+        case 'infrastructure':
+          return 'Investment in technical infrastructure like servers or cloud services.';
+        default:
+          return 'General transaction within the community financial ecosystem.';
+      }
+    }
+
+    // Show loading indicator
+    function showLoadingIndicator() {
+      const loadingElement = document.getElementById('loadingIndicator');
+      if (loadingElement) {
+        loadingElement.style.display = 'flex';
+      }
+      
+      const contentElement = document.getElementById('ledgerContent');
+      if (contentElement) {
+        contentElement.style.display = 'none';
+      }
+    }
+
+    // Hide loading indicator
+    function hideLoadingIndicator() {
+      const loadingElement = document.getElementById('loadingIndicator');
+      if (loadingElement) {
+        loadingElement.style.display = 'none';
+      }
+      
+      const contentElement = document.getElementById('ledgerContent');
+      if (contentElement) {
+        contentElement.style.display = 'block';
+      }
+    }
+
+    // Update ledger statistics with data
+    function updateLedgerStatistics(ledgerData) {
+      if (!ledgerData) return;
+      
+      // Get the community ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const communityId = urlParams.get('id');
+      
+      // Get community info to ensure consistent data
+      const communityInfo = getCommunityInfoFallback(communityId);
+      
+      // Use community-specific data rather than zeros for any missing values
+      const transactions = communityInfo.totalTransactions || ledgerData.totalTransactions || '0';
+      const amount = communityInfo.totalAmount || ledgerData.totalAmount || '₹0';
+      const blocks = communityInfo.totalBlocks || ledgerData.totalBlocks || '0'; 
+      const blockTime = communityInfo.avgBlockTime || ledgerData.avgBlockTime || '0s';
+      
+      // Update statistics
+      const totalTransactionsElement = document.getElementById('totalTransactions');
+      const totalAmountElement = document.getElementById('totalAmount');
+      const totalBlocksElement = document.getElementById('totalBlocks');
+      const avgBlockTimeElement = document.getElementById('avgBlockTime');
+      
+      if (totalTransactionsElement) {
+        totalTransactionsElement.textContent = transactions;
+      }
+      
+      if (totalAmountElement) {
+        totalAmountElement.textContent = amount;
+      }
+      
+      if (totalBlocksElement) {
+        totalBlocksElement.textContent = blocks;
+      }
+      
+      if (avgBlockTimeElement) {
+        avgBlockTimeElement.textContent = blockTime;
+      }
+
+      // Update latest block details if available
+      const latestBlockElement = document.getElementById('latestBlock');
+      const latestBlockHashElement = document.getElementById('latestBlockHash');
+      
+      if (latestBlockElement) {
+        latestBlockElement.textContent = communityInfo.latestBlock || 'Unknown';
+        
+        if (latestBlockHashElement) {
+          latestBlockHashElement.textContent = communityInfo.latestBlockHash || 'Unknown';
+        }
+      }
+      
+      // Update trust factors with community-specific data
+      updateTrustFactors(communityInfo);
+    }
+
+    // Update trust factors with more specific data
+    function updateTrustFactors(communityInfo) {
+      // Get trust factors from community info or generate realistic values if not available
+      const repayment = communityInfo.trustFactors?.repayment || generateTrustFactor(communityInfo.trustScore, 'repayment');
+      const activity = communityInfo.trustFactors?.activity || generateTrustFactor(communityInfo.trustScore, 'activity');
+      const verification = communityInfo.trustFactors?.verification || generateTrustFactor(communityInfo.trustScore, 'verification');
+      const longevity = communityInfo.trustFactors?.longevity || generateTrustFactor(communityInfo.trustScore, 'longevity');
+      
+      // Update the UI elements
+      document.getElementById('repaymentFactor').textContent = `${repayment}/100`;
+      document.getElementById('activityFactor').textContent = `${activity}/100`;
+      document.getElementById('verificationFactor').textContent = `${verification}/100`;
+      document.getElementById('longevityFactor').textContent = `${longevity}/100`;
+    }
+    
+    // Generate realistic trust factor based on overall trust score
+    function generateTrustFactor(trustScore, factorType) {
+      // Base the factor on the overall trust score with some variance
+      const baseScore = parseInt(trustScore) || 70;
+      
+      // Different variance for different factors
+      const variances = {
+        'repayment': { min: -5, max: 8 },
+        'activity': { min: -8, max: 5 },
+        'verification': { min: -3, max: 10 },
+        'longevity': { min: -10, max: 3 }
+      };
+      
+      const variance = variances[factorType] || { min: -5, max: 5 };
+      const adjustment = Math.floor(Math.random() * (variance.max - variance.min + 1)) + variance.min;
+      
+      // Ensure the score is between 0 and 100
+      return Math.max(0, Math.min(100, baseScore + adjustment));
+    }
+
+    // Update community information
+    function updateCommunityInfo(communityInfo) {
+      document.getElementById('communityName').textContent = communityInfo.name;
+      document.getElementById('communityTrustScore').textContent = `${communityInfo.trustScore}/100`;
+      
+      // Update icon
+      const iconElement = document.querySelector('.community-icon');
+      if (iconElement) {
+        iconElement.innerHTML = `<i class="fas ${communityInfo.icon || 'fa-users'}"></i>`;
+        if (communityInfo.iconColor) {
+          iconElement.querySelector('i').style.color = communityInfo.iconColor;
+        }
+      }
+      
+      // Update the advanced community profile
+      // Update Location
+      const locationElement = document.getElementById('communityLocation');
+      if (locationElement) {
+        locationElement.textContent = communityInfo.location || 'Information not available';
+      }
+      
+      // Update Established date
+      const establishedElement = document.getElementById('communityEstablished');
+      if (establishedElement) {
+        establishedElement.textContent = communityInfo.establishedDate || 'Information not available';
+      }
+      
+      // Update Leadership info
+      const leadershipElement = document.getElementById('communityLeadership');
+      if (leadershipElement) {
+        if (communityInfo.leaderName) {
+          leadershipElement.textContent = `Led by ${communityInfo.leaderName}`;
+          if (communityInfo.leaderDescription) {
+            leadershipElement.textContent += ` - ${communityInfo.leaderDescription}`;
+          }
+        } else {
+          leadershipElement.textContent = 'Information not available';
+        }
+      }
+      
+      // Update Focus Area
+      const focusElement = document.getElementById('communityFocus');
+      if (focusElement) {
+        focusElement.textContent = communityInfo.specialFocus || communityInfo.description || 'Information not available';
+      }
+      
+      // Update Trust Factors
+      updateTrustFactors(communityInfo);
+      
+      // Update blockchain info
+      const now = new Date();
+      document.getElementById('lastUpdated').textContent = now.toLocaleString();
+      document.getElementById('latestBlock').textContent = `#${communityInfo.latestBlock || '0000'}`;
+      document.getElementById('latestBlockHash').textContent = communityInfo.latestBlockHash || 'Not available';
+    }
+
+    // Render blocks based on ledger data
+    function renderBlocks(ledgerData) {
+      const blockListElement = document.getElementById('blockList');
+      
+      if (!ledgerData || !ledgerData.blocks || ledgerData.blocks.length === 0) {
+        blockListElement.innerHTML = '<p>No transactions found for this community.</p>';
+        return;
+      }
+      
+      // Clear existing blocks
+      blockListElement.innerHTML = '';
+      
+      // Get blocks from ledger data
+      const blocks = ledgerData.blocks;
+      
+      // Render each block
+      blocks.forEach((block, index) => {
+        // Format date
+        const date = new Date(block.timestamp);
+        const formattedDate = date.toLocaleString();
+        
+        // Get transaction status class
+        const statusClass = `status-${block.status.toLowerCase()}`;
+        
+        // Get transaction type icon
+        const typeIcon = getTransactionTypeIcon(block.transactionType);
+        
+        // Create block element
+        const blockElement = document.createElement('div');
+        blockElement.className = 'block-item';
+        
+        // Set block content
+        blockElement.innerHTML = `
+          <div class="block-header" onclick="toggleBlock(${index})">
+            <span class="block-number">Block #${block.blockNumber}</span>
+            <span class="block-timestamp">${formattedDate}</span>
+            <span class="block-toggle" id="blockToggle${index}"><i class="fas fa-chevron-down"></i></span>
+          </div>
+          <div class="block-content" id="blockContent${index}">
+            <div class="transaction-info">
+              <div class="transaction-row">
+                <span class="transaction-label">Transaction Type:</span>
+                <span class="transaction-value">
+                  <span class="transaction-type">
+                    <i class="fas ${typeIcon}"></i> ${block.transactionType}
+                  </span>
+                </span>
+              </div>
+              
+              <div class="transaction-row">
+                <span class="transaction-label">Sender:</span>
+                <span class="transaction-value">${block.sender}</span>
+              </div>
+              
+              ${block.recipient ? `
+              <div class="transaction-row">
+                <span class="transaction-label">Recipient:</span>
+                <span class="transaction-value">${block.recipient}</span>
+              </div>
+              ` : ''}
+              
+              <div class="transaction-row">
+                <span class="transaction-label">Amount:</span>
+                <span class="transaction-value transaction-amount">₹${block.amount.toLocaleString('en-IN')}</span>
+              </div>
+              
+              <div class="transaction-row">
+                <span class="transaction-label">Status:</span>
+                <span class="transaction-value">
+                  <span class="transaction-status ${statusClass}">${block.status}</span>
+                </span>
+              </div>
+            </div>
+            
+            ${block.details ? `
+            <div class="transaction-details">
+              <h4>Transaction Details</h4>
+              <div class="detail-list">
+                ${Object.entries(block.details).map(([key, value]) => `
+                  <div class="detail-item">
+                    <span class="detail-label">${formatLabel(key)}:</span>
+                    <span class="detail-value">${value}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+            ` : ''}
+            
+            <div class="block-hashes">
+              <div class="hash-row">
+                <span class="hash-label">Block Hash:</span>
+                <div class="hash-value">${block.hash}</div>
+              </div>
+              <div class="hash-row">
+                <span class="hash-label">Previous Block Hash:</span>
+                <div class="hash-value">${block.previousHash}</div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        blockListElement.appendChild(blockElement);
+      });
+    }
+
+    // Function to get transaction type icon
+    function getTransactionTypeIcon(transactionType) {
+      // Determine icon based on transaction type text
+      if (transactionType.includes('Crop') || transactionType.includes('Farm')) {
+        return 'fa-seedling';
+      } else if (transactionType.includes('Boat') || transactionType.includes('Fish')) {
+        return 'fa-fish';
+      } else if (transactionType.includes('Business') || transactionType.includes('Expansion')) {
+        return 'fa-store';
+      } else if (transactionType.includes('Loan')) {
+        return 'fa-hand-holding-usd';
+      } else if (transactionType.includes('Repayment')) {
+        return 'fa-money-bill-wave';
+      } else if (transactionType.includes('Equipment')) {
+        return 'fa-tools';
+      } else if (transactionType.includes('Mentor')) {
+        return 'fa-chalkboard-teacher';
+      } else if (transactionType.includes('Emergency')) {
+        return 'fa-exclamation-triangle';
+      } else if (transactionType.includes('Seed') || transactionType.includes('Fund')) {
+        return 'fa-donate';
+      } else if (transactionType.includes('Development')) {
+        return 'fa-code';
+      } else if (transactionType.includes('Infrastructure')) {
+        return 'fa-server';
+      } else {
+        return 'fa-exchange-alt';
+      }
+    }
+
+    // Helper function to format label
+    function formatLabel(key) {
+      // Convert camelCase to Title Case with spaces
+      return key
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/^./, str => str.toUpperCase());
+    }
+
+    // Toggle block expansion
+    function toggleBlock(index) {
+      const contentElement = document.getElementById(`blockContent${index}`);
+      const toggleElement = document.getElementById(`blockToggle${index}`);
+      
+      contentElement.classList.toggle('open');
+      toggleElement.classList.toggle('open');
+    }
+
+    // Show error message
+    function showError(message) {
+      const loadingElement = document.getElementById('loadingIndicator');
+      const contentElement = document.getElementById('ledgerContent');
+      const errorElement = document.getElementById('errorMessage');
+      
+      if (loadingElement) loadingElement.style.display = 'none';
+      if (contentElement) contentElement.style.display = 'none';
+      if (errorElement) {
+        errorElement.style.display = 'block';
+        const messageElement = errorElement.querySelector('p');
+        if (messageElement) messageElement.textContent = message || 'An error occurred. Please try again later.';
+      }
+    }
+
+    // Toggle menu for mobile
+    function toggleMenu() {
+      const navLinks = document.getElementById('navLinks');
+      if (navLinks) navLinks.classList.toggle('active');
+    }
+
+    // Manual refresh of ledger data
+    function manualRefresh() {
+      // Get community ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const communityId = urlParams.get('id');
+      
+      if (!communityId) return;
+      
+      // Add refreshing animation to the button
+      const refreshBtn = document.querySelector('.refresh-btn');
+      if (refreshBtn) {
+        refreshBtn.classList.add('refreshing');
+        refreshBtn.disabled = true;
+      
+        // Refresh the ledger data
+        displayLedgerData(communityId);
+        
+        // Remove animation after a short delay
+        setTimeout(() => {
+          refreshBtn.classList.remove('refreshing');
+          refreshBtn.disabled = false;
+        }, 1000);
+      }
+    }
+
+    // Get community-specific information
+    async function getCommunityInfo(communityId) {
+      // Try to use the main.js function if available
+      if (typeof window.getCommunities === 'function') {
+        try {
+          const communities = await window.getCommunities();
+          const community = communities.find(c => c._id === communityId);
+          if (community) {
+            return {
+              ...community,
+              totalTransactions: community.transactionCount || '0',
+              totalAmount: community.transactionVolume || '₹0',
+              totalBlocks: community.blockCount || '0',
+              avgBlockTime: community.avgBlockTime || '3s',
+              latestBlock: community.latestBlockNumber || '0000',
+              latestBlockHash: community.latestBlockHash || '0000000000000000000000000000000000000000000000000000000000000000'
+            };
+          }
+        } catch (error) {
+          console.error('Error fetching community from main.js:', error);
+        }
+      }
+      
+      // Fallback to hardcoded data
+      return getCommunityInfoFallback(communityId);
+    }
+
+    // Fallback function with hardcoded data for communities
+    function getCommunityInfoFallback(communityId) {
+      // Define community data for each community
+      const communityData = {
+        'community-1': {
+          name: 'Delhi Farmers Collective',
+          icon: 'fa-tractor',
+          iconColor: '#5d9c59',
+          trustScore: 85,
+          memberCount: 124,
+          description: 'A collective of small-scale farmers from the Delhi region working together for sustainable agriculture.',
+          location: 'Delhi, India',
+          establishedDate: 'May 2021',
+          verification: true,
+          leaderName: 'Rajesh Kumar',
+          leaderDescription: 'Community founder and agricultural expert',
+          specialFocus: 'Sustainable farming techniques, crop rotation practices, and equipment sharing among members.',
+          activeLoans: 28,
+          successfulRepayments: 115,
+          defaultRate: '3.2%',
+          totalTransactions: '213',
+          totalAmount: '₹38.6 Lakhs',
+          totalBlocks: '246',
+          avgBlockTime: '3.2s',
+          latestBlock: '1214',
+          latestBlockHash: '8f7d64c98e2ad7bc9431f4b9852a912b9da25619af902c3dea51e698f7a26152',
+          trustFactors: {
+            repayment: 87,
+            activity: 84,
+            verification: 82,
+            longevity: 78
+          }
+        },
+        'community-2': {
+          name: 'Mumbai Women Entrepreneurs',
+          icon: 'fa-briefcase',
+          iconColor: '#905E96',
+          trustScore: 92,
+          memberCount: 210,
+          description: 'A network of women entrepreneurs from Mumbai supporting each other in business growth and mentorship.',
+          location: 'Mumbai, India',
+          establishedDate: 'January 2020',
+          verification: true,
+          leaderName: 'Priya Shah',
+          leaderDescription: 'Business mentor and community organizer',
+          specialFocus: 'Business development, marketing strategies, digital transformation, and mentorship for women entrepreneurs.',
+          activeLoans: 45,
+          successfulRepayments: 237,
+          defaultRate: '1.8%',
+          totalTransactions: '342',
+          totalAmount: '₹92.4 Lakhs',
+          totalBlocks: '402',
+          avgBlockTime: '2.8s',
+          latestBlock: '1527',
+          latestBlockHash: 'a67e2cf8945de877921b53192927f0657b9ff6c3a7f29c4c443ec0843bd789b5',
+          trustFactors: {
+            repayment: 94,
+            activity: 91,
+            verification: 89,
+            longevity: 86
+          }
+        },
+        'community-3': {
+          name: 'Chennai Fishermen Cooperative',
+          icon: 'fa-fish',
+          iconColor: '#1d5d9b',
+          trustScore: 78,
+          memberCount: 156,
+          description: 'A cooperative of traditional fishermen from Chennai coastal areas supporting sustainable fishing practices.',
+          location: 'Chennai, India',
+          establishedDate: 'August 2021',
+          verification: true,
+          leaderName: 'Selvam T.',
+          leaderDescription: 'Experienced fisherman and community coordinator',
+          specialFocus: 'Sustainable fishing practices, equipment sharing, seasonal support during monsoons, and cooperative sales.',
+          activeLoans: 32,
+          successfulRepayments: 98,
+          defaultRate: '4.7%',
+          totalTransactions: '178',
+          totalAmount: '₹25.2 Lakhs',
+          totalBlocks: '204',
+          avgBlockTime: '3.5s',
+          latestBlock: '986',
+          latestBlockHash: 'c4f2d67b3ec8931bd37b4ab31a6ce0d73c96871c3482b75f241d4a922ea3f518',
+          trustFactors: {
+            repayment: 76,
+            activity: 79,
+            verification: 80,
+            longevity: 73
+          }
+        },
+        'community-4': {
+          name: 'Bangalore Tech Startups',
+          icon: 'fa-laptop-code',
+          iconColor: '#539165',
+          trustScore: 83,
+          memberCount: 89,
+          description: 'A community of tech startups and entrepreneurs from Bangalore focused on innovation and growth.',
+          location: 'Bangalore, India',
+          establishedDate: 'October 2020',
+          verification: true,
+          leaderName: 'Vikram Desai',
+          leaderDescription: 'Serial entrepreneur and tech investor',
+          specialFocus: 'Technology innovation, startup funding strategies, shared resources, and mentorship from established entrepreneurs.',
+          activeLoans: 19,
+          successfulRepayments: 67,
+          defaultRate: '2.9%',
+          totalTransactions: '142',
+          totalAmount: '₹76.8 Lakhs',
+          totalBlocks: '176',
+          avgBlockTime: '3.1s',
+          latestBlock: '845',
+          latestBlockHash: '59d7c1d56d3f16824dc4aff39a3f36cf49897f8cea6876aba417733aaa30f8c9',
+          trustFactors: {
+            repayment: 85,
+            activity: 81,
+            verification: 88,
+            longevity: 79
+          }
+        },
+        'default': {
+          name: 'Community Group',
+          icon: 'fa-users',
+          iconColor: '#3be4d1',
+          trustScore: 70,
+          memberCount: 50,
+          description: 'A community group working together for financial inclusion and support.',
+          location: 'India',
+          establishedDate: 'January 2022',
+          verification: false,
+          leaderName: 'Community Leader',
+          specialFocus: 'Financial inclusion, peer support, and community empowerment.',
+          activeLoans: 10,
+          successfulRepayments: 25,
+          defaultRate: '5.0%',
+          totalTransactions: '58',
+          totalAmount: '₹8.4 Lakhs',
+          totalBlocks: '76',
+          avgBlockTime: '4.2s',
+          latestBlock: '412',
+          latestBlockHash: '72a9c4b5e9d1e3f8a7c6b5d0e2f1a9c8b7e6d5f4a3c2e1d0b9a8c7f6e5d4a3b2',
+          trustFactors: {
+            repayment: 72,
+            activity: 68,
+            verification: 71,
+            longevity: 65
+          }
+        }
+      };
+      
+      // Return community info or default if not found
+      return communityData[communityId] || communityData['default'];
+    }
+
+    // Apply filters to ledger data
+    function applyFilters() {
+      const typeFilter = document.getElementById('typeFilter').value;
+      const statusFilter = document.getElementById('statusFilter').value;
+      const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const communityId = urlParams.get('id');
+      
+      if (!communityId) return;
+      
+      // Get the current ledger data
+      getLedgerDataForCommunity(communityId).then(ledgerData => {
+        // Create a filtered copy of ledger data
+        const filteredBlocks = ledgerData.blocks.filter(block => {
+          // Apply type filter
+          if (typeFilter && !block.transactionType.toLowerCase().includes(typeFilter.toLowerCase())) {
+            return false;
+          }
+          
+          // Apply status filter
+          if (statusFilter && block.status.toLowerCase() !== statusFilter.toLowerCase()) {
+            return false;
+          }
+          
+          // Apply search filter
+          if (searchFilter) {
+            const searchableContent = [
+              block.sender, 
+              block.recipient, 
+              block.transactionType, 
+              block.hash, 
+              block.blockNumber,
+              JSON.stringify(block.details || {})
+            ].filter(Boolean).join(' ').toLowerCase();
+            
+            if (!searchableContent.includes(searchFilter)) {
+              return false;
+            }
+          }
+          
+          return true;
+        });
+        
+        // Create filtered ledger data
+        const filteredLedgerData = {
+          ...ledgerData,
+          blocks: filteredBlocks
+        };
+        
+        // Render blocks immediately
+        renderBlocks(filteredLedgerData);
+        
+        // Show filter summary if filters are applied
+        const blockListElement = document.getElementById('blockList');
+        if (blockListElement) {
+          if (filteredBlocks.length === 0) {
+            blockListElement.innerHTML = '<p>No transactions match your filters. Try adjusting your criteria.</p>';
+          } else {
+            // Add filter summary if any filters are applied
+            const filterCount = (typeFilter ? 1 : 0) + (statusFilter ? 1 : 0) + (searchFilter ? 1 : 0);
+            if (filterCount > 0) {
+              const filterSummary = document.createElement('div');
+              filterSummary.className = 'filter-summary';
+              filterSummary.innerHTML = `
+                <p>Showing ${filteredBlocks.length} of ${ledgerData.blocks.length} transactions 
+                with ${filterCount} filter${filterCount > 1 ? 's' : ''} applied.</p>
+                <button onclick="clearFilters()" class="clear-filters-btn">Clear Filters</button>
+              `;
+              blockListElement.insertBefore(filterSummary, blockListElement.firstChild);
+            }
+          }
+        }
+      });
+    }
+
+    // Clear all applied filters
+    function clearFilters() {
+      const typeFilter = document.getElementById('typeFilter');
+      const statusFilter = document.getElementById('statusFilter');
+      const searchFilter = document.getElementById('searchFilter');
+      
+      if (typeFilter) typeFilter.value = '';
+      if (statusFilter) statusFilter.value = '';
+      if (searchFilter) searchFilter.value = '';
+      
+      // Re-fetch and display ledger data without filters
+      const urlParams = new URLSearchParams(window.location.search);
+      const communityId = urlParams.get('id');
+      if (communityId) {
+        displayLedgerData(communityId);
+      }
+    }
+
+    // Enhanced function to generate community-specific transactions
+    function generateCommunityTransactions(communityId, count = 10) {
+      const communityInfo = getCommunityInfoFallback(communityId);
+      const transactions = [];
+      const now = new Date();
+      const transactionTypes = getTransactionTypesForCommunity(communityId);
+      
+      // Community-specific parameters
+      const params = {
+        'community-1': { // Delhi Farmers Collective
+          minAmount: 5000,
+          maxAmount: 35000,
+          senderPrefix: 'Farmer_',
+          receiverPrefix: 'Farm_Coop_'
+        },
+        'community-2': { // Mumbai Women Entrepreneurs
+          minAmount: 10000,
+          maxAmount: 80000,
+          senderPrefix: 'Entrepreneur_',
+          receiverPrefix: 'Business_'
+        },
+        'community-3': { // Chennai Fishermen Cooperative
+          minAmount: 3000,
+          maxAmount: 25000,
+          senderPrefix: 'Fisher_',
+          receiverPrefix: 'Coastal_Coop_'
+        },
+        'community-4': { // Bangalore Tech Startups
+          minAmount: 15000,
+          maxAmount: 150000,
+          senderPrefix: 'TechStartup_',
+          receiverPrefix: 'InvestorGroup_'
+        },
+        'default': {
+          minAmount: 5000,
+          maxAmount: 50000,
+          senderPrefix: 'Member_',
+          receiverPrefix: 'Community_'
+        }
+      }[communityId] || params['default'];
+      
+      // Generate transactions
+      for (let i = 0; i < count; i++) {
+        const daysAgo = Math.floor(Math.random() * 180); // Past 6 months
+        const date = new Date(now);
+        date.setDate(date.getDate() - daysAgo);
+        
+        // Random amount within community-specific range
+        const amount = Math.floor(Math.random() * (params.maxAmount - params.minAmount)) + params.minAmount;
+        
+        // Get random transaction type for this community
+        const type = transactionTypes[Math.floor(Math.random() * transactionTypes.length)];
+        const transactionType = type.toLowerCase().replace(' ', '_');
+        
+        // Generate realistic sender and receiver names
+        const senderId = Math.floor(Math.random() * 100) + 1;
+        const receiverId = Math.floor(Math.random() * 20) + 1;
+        const sender = `${params.senderPrefix}${senderId}`;
+        const receiver = `${params.receiverPrefix}${receiverId}`;
+        
+        // Weighted status selection
+        const statuses = ['Completed', 'Pending', 'Approved', 'Rejected'];
+        const statusWeights = [0.7, 0.1, 0.15, 0.05];
+        const status = weightedRandom(statuses, statusWeights);
+        
+        // Generate transaction hash
+        const hash = generateRandomHash();
+        
+        // Generate transaction
+        transactions.push({
+          id: `TX-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+          date: date.toISOString(),
+          type: transactionType,
+          description: formatTransactionDescription(type, amount),
+          amount: amount,
+          sender: sender,
+          receiver: receiver,
+          status: status,
+          hash: hash
+        });
+      }
+      
+      // Sort by date (newest first)
+      transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+      
+      return transactions;
+    }
+    
+    // Format transaction description
+    function formatTransactionDescription(type, amount) {
+      // For loan requests
+      if (type.includes('Loan Request') || type.includes('Business Loan')) {
+        return `${type} (₹${amount.toLocaleString('en-IN')})`;
+      }
+      
+      // For repayments
+      if (type.includes('Repayment')) {
+        return `Loan ${type}`;
+      }
+      
+      return type;
+    }
+  </script>
+</body>
+</html> 

@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify OTP - SahayaChain</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    body {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: #f9f9f9;
+    }
+    
+    /* NAVBAR */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: #0c1c2c;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-container img {
+      width: 40px;
+      margin-right: 10px;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .menu-toggle div {
+      width: 25px;
+      height: 3px;
+      background-color: white;
+      margin: 4px 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #3be4d1;
+    }
+    
+    .spacer {
+      height: 80px;
+    }
+    
+    /* OTP SPECIFIC STYLES */
+    .main-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    
+    .otp-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 450px;
+      padding: 2.5rem;
+      text-align: center;
+    }
+    
+    .otp-card h1 {
+      color: #07464c;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .otp-card p {
+      color: #666;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    
+    .phone-display {
+      font-weight: 600;
+      color: #07464c;
+    }
+    
+    /* OTP Input */
+    .otp-container {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    
+    .otp-input {
+      width: 50px;
+      height: 55px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    
+    .otp-input:focus {
+      border-color: #3be4d1;
+      box-shadow: 0 0 0 2px rgba(59, 228, 209, 0.2);
+      outline: none;
+    }
+    
+    /* Verify Button */
+    .verify-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background-color: #3be4d1;
+      color: #0c1c2c;
+      border: none;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    
+    .verify-btn:hover {
+      background-color: #2ad1be;
+      transform: translateY(-3px);
+    }
+    
+    /* Resend OTP */
+    .resend-otp {
+      display: block;
+      background: none;
+      border: none;
+      color: #07464c;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin: 0 auto;
+    }
+    
+    .resend-otp:hover {
+      color: #3be4d1;
+    }
+    
+    .timer {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.5rem;
+    }
+    
+    /* Alert Messages */
+    .alert {
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      animation-duration: 0.5s;
+      animation-fill-mode: both;
+    }
+    
+    .alert-success {
+      background-color: #d4edda;
+      color: #155724;
+      border-left: 4px solid #28a745;
+    }
+    
+    .alert-error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border-left: 4px solid #dc3545;
+    }
+    
+    .alert-warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border-left: 4px solid #ffc107;
+    }
+    
+    /* Logo and Illustrations */
+    .logo-large {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.5rem;
+      background-color: #f0f9f9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .logo-large i {
+      font-size: 2.5rem;
+      color: #3be4d1;
+    }
+    
+    /* Back Button */
+    .back-link {
+      display: inline-block;
+      color: #07464c;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-top: 1.5rem;
+      font-weight: 500;
+    }
+    
+    .back-link:hover {
+      color: #3be4d1;
+    }
+    
+    /* Media Queries */
+    @media (max-width: 480px) {
+      .otp-card {
+        padding: 2rem 1.5rem;
+      }
+      
+      .otp-input {
+        width: 40px;
+        height: 45px;
+        font-size: 1.2rem;
+      }
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/link--v1.png" alt="Logo">
+      <div class="logo">SahayaChain</div>
+    </div>
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <nav id="navLinks">
+      <a href="index-in.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="communities.html">Communities</a>
+      <a href="contact.html">Contact</a>
+      <a href="login3.html">Sign In</a>
+    </nav>
+  </header>
+
+  <div class="spacer"></div>
+
+  <div class="main-container">
+    <div class="otp-card">
+      <div class="logo-large">
+        <i class="fas fa-shield-alt"></i>
+      </div>
+      
+      <h1>Verify Your Account</h1>
+      <p>We have sent a 6-digit verification code to <span class="phone-display" id="displayPhone">+91 ******1234</span></p>
+      
+      <div id="alertBox" class="alert"></div>
+      
+      <!-- Development mode helper -->
+      <div id="devModeHelper" style="background-color: #fffde7; border-left: 4px solid #fbc02d; padding: 10px; margin-bottom: 1.5rem; text-align: left; display: none;">
+        <p style="margin: 0; font-size: 0.85rem;">
+          <strong>Development Mode:</strong> For testing, use OTP code: <code style="background: #f5f5f5; padding: 2px 5px; border-radius: 3px; font-weight: bold;">123456</code>
+        </p>
+      </div>
+      
+      <form id="otpForm">
+        <div class="otp-container">
+          <input type="text" maxlength="1" class="otp-input" id="otp1" />
+          <input type="text" maxlength="1" class="otp-input" id="otp2" />
+          <input type="text" maxlength="1" class="otp-input" id="otp3" />
+          <input type="text" maxlength="1" class="otp-input" id="otp4" />
+          <input type="text" maxlength="1" class="otp-input" id="otp5" />
+          <input type="text" maxlength="1" class="otp-input" id="otp6" />
+        </div>
+        
+        <button type="submit" class="verify-btn">Verify & Continue</button>
+      </form>
+      
+      <button type="button" class="resend-otp" id="resendOTP" disabled>
+        Resend OTP in <span id="countdown">30</span>s
+      </button>
+      
+      <div class="timer" id="otpTimer"></div>
+      
+      <a href="login3.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Login
+      </a>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get user data from session storage
+      const phone = sessionStorage.getItem('phone');
+      const email = sessionStorage.getItem('email');
+      const isSignup = sessionStorage.getItem('isSignup') === 'true';
+      
+      // Redirect if phone number not found
+      if (!phone) {
+        console.error('Phone number not found in session storage');
+        showAlert('error', 'Session expired. Please try again.');
+        setTimeout(() => {
+          window.location.href = 'login3.html';
+        }, 3000);
+        return;
+      }
+      
+      // Display masked phone number
+      if (phone) {
+        const maskedPhone = maskPhone(phone);
+        document.getElementById('displayPhone').textContent = maskedPhone;
+      }
+      
+      // Check for development mode and show helper
+      const isDevelopment = window.location.hostname === 'localhost' || 
+                          window.location.hostname === '127.0.0.1' ||
+                          !window.location.hostname.includes('.');
+      if (isDevelopment) {
+        document.getElementById('devModeHelper').style.display = 'block';
+      }
+      
+      // Initialize fraud detection (check for suspicious patterns)
+      checkForSuspiciousActivity();
+      
+      // Start OTP timer
+      startOtpTimer();
+      
+      // Focus on first OTP input
+      document.getElementById('otp1').focus();
+      
+      // Auto-fill OTP if in dev mode
+      const isDevMode = sessionStorage.getItem('devMode') === 'true';
+      const testOTP = sessionStorage.getItem('testOTP');
+      
+      if (isDevMode && testOTP && testOTP.length === 6) {
+        console.log('Auto-filling OTP from dev mode');
+        const otpInputs = document.querySelectorAll('.otp-input');
+        
+        // Fill all inputs with respective digits
+        otpInputs.forEach((input, i) => {
+          input.value = testOTP.charAt(i);
+        });
+        
+        // Show dev mode helper with clearer instructions
+        document.getElementById('devModeHelper').style.display = 'block';
+        document.getElementById('devModeHelper').innerHTML = `
+          <p style="margin: 0; font-size: 0.9rem;">
+            <strong>Development Mode Active</strong><br>
+            Test OTP code <code style="background: #f5f5f5; padding: 2px 5px; border-radius: 3px; font-weight: bold;">123456</code> has been auto-filled. 
+            <span id="autoSubmitStatus">Auto-submitting in 2 seconds...</span>
+          </p>
+        `;
+        
+        // Highlight the verify button to make it clear what to do next
+        const verifyBtn = document.querySelector('.verify-btn');
+        verifyBtn.style.animation = 'pulse 1.5s infinite';
+        
+        // Add a pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+          @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(7, 70, 76, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(7, 70, 76, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(7, 70, 76, 0); }
+          }
+        `;
+        document.head.appendChild(style);
+        
+        // Auto-submit after a short delay (gives user a chance to see what's happening)
+        setTimeout(() => {
+          const autoSubmitStatus = document.getElementById('autoSubmitStatus');
+          if (autoSubmitStatus) {
+            autoSubmitStatus.textContent = 'Submitting now...';
+          }
+          
+          document.getElementById('otpForm').dispatchEvent(new Event('submit'));
+        }, 2000);
+      }
+      
+      // OTP Form Submission
+      const otpForm = document.getElementById('otpForm');
+      if (otpForm) {
+        otpForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const otp = Array.from(document.querySelectorAll('.otp-input'))
+            .map(input => input.value)
+            .join('');
+          
+          if (otp.length !== 6) {
+            showAlert('error', 'Please enter the complete 6-digit OTP');
+            return;
+          }
+
+          // Validate OTP format (only digits)
+          if (!/^\d{6}$/.test(otp)) {
+            showAlert('error', 'OTP should contain only digits');
+            return;
+          }
+          
+          // Detect if user is offline
+          if (!navigator.onLine) {
+            showAlert('error', 'You appear to be offline. Please check your internet connection and try again.');
+            return;
+          }
+          
+          const submitBtn = document.querySelector('.verify-btn');
+          
+          try {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+            
+            if (isSignup) {
+              // For signup process
+              const userData = JSON.parse(sessionStorage.getItem('userData') || '{}');
+              userData.otp = otp;
+              
+              try {
+                const result = await registerUser(userData);
+                showAlert('success', 'Account created successfully! Redirecting...');
+                
+                // Clear session data
+                sessionStorage.removeItem('userData');
+                sessionStorage.removeItem('isSignup');
+                
+                // Set verified status in localStorage
+                const currentUser = JSON.parse(localStorage.getItem('userData') || '{}');
+                currentUser.verified = true;
+                localStorage.setItem('userData', JSON.stringify(currentUser));
+                
+                setTimeout(() => {
+                  window.location.href = 'dashboard-borrow.html';
+                }, 1500);
+              } catch (error) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Verify & Continue';
+                showAlert('error', error.message || 'Registration failed. Please try again.');
+                
+                // Reset OTP fields on error
+                resetOtpFields();
+              }
+            } else {
+              // For login process
+              try {
+                await verifyOTP({ phone, otp });
+                showAlert('success', 'OTP verified successfully! Redirecting...');
+                
+                // Clear session storage
+                sessionStorage.removeItem('phone');
+                
+                setTimeout(() => {
+                  window.location.href = 'dashboard-borrow.html';
+                }, 1500);
+              } catch (error) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Verify & Continue';
+                showAlert('error', error.message || 'Invalid OTP. Please try again.');
+                
+                // Reset OTP fields on error
+                resetOtpFields();
+                
+                // Track failed attempts and possibly show timeout message
+                trackFailedAttempts();
+              }
+            }
+          } catch (error) {
+            console.error('Error during OTP verification:', error);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Verify & Continue';
+            showAlert('error', error.message || 'Verification failed. Please try again.');
+            
+            // Reset OTP fields on error
+            resetOtpFields();
+          }
+        });
+      }
+      
+      // OTP input handling - auto-tab
+      const otpInputs = document.querySelectorAll('.otp-input');
+      otpInputs.forEach((input, index) => {
+        input.addEventListener('input', function() {
+          // Remove non-digit characters
+          this.value = this.value.replace(/\D/g, '');
+          
+          if (this.value.length === 1) {
+            if (index < otpInputs.length - 1) {
+              otpInputs[index + 1].focus();
+            } else {
+              // Auto-submit when all fields are filled
+              this.blur(); // Remove focus to hide mobile keyboard
+              
+              // Short delay before auto-submit to allow blur
+              setTimeout(() => {
+                if (document.querySelector('.verify-btn') && !document.querySelector('.verify-btn').disabled) {
+                  document.getElementById('otpForm').dispatchEvent(new Event('submit'));
+                }
+              }, 200);
+            }
+          }
+        });
+        
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Backspace' && !this.value && index > 0) {
+            otpInputs[index - 1].focus();
+          }
+        });
+        
+        // Only allow numbers
+        input.addEventListener('keypress', function(e) {
+          if (isNaN(e.key)) {
+            e.preventDefault();
+          }
+        });
+        
+        // Handle paste event for the entire OTP
+        input.addEventListener('paste', function(e) {
+          e.preventDefault();
+          const pasteData = (e.clipboardData || window.clipboardData).getData('text');
+          
+          // Check if pasted content is a 6-digit number
+          if (/^\d{6}$/.test(pasteData)) {
+            // Fill all inputs with respective digits
+            otpInputs.forEach((input, i) => {
+              input.value = pasteData.charAt(i);
+            });
+            
+            // Auto-submit after paste
+            setTimeout(() => {
+              document.getElementById('otpForm').dispatchEvent(new Event('submit'));
+            }, 100);
+          } else {
+            showAlert('error', 'Please paste a valid 6-digit OTP');
+          }
+        });
+      });
+      
+      // Resend OTP
+      const resendOTPBtn = document.getElementById('resendOTP');
+      if (resendOTPBtn) {
+        resendOTPBtn.addEventListener('click', async function() {
+          if (this.disabled) return;
+          
+          // Detect if user is offline
+          if (!navigator.onLine) {
+            showAlert('error', 'You appear to be offline. Please check your internet connection and try again.');
+            return;
+          }
+          
+          try {
+            resendOTPBtn.disabled = true;
+            resendOTPBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            
+            await sendOTP(phone);
+            resetOtpFields();
+            resendOTPBtn.textContent = 'Resend OTP in 30s';
+            showAlert('success', 'OTP resent successfully');
+            startOtpTimer();
+          } catch (error) {
+            resendOTPBtn.disabled = false;
+            resendOTPBtn.textContent = 'Resend OTP';
+            showAlert('error', error.message || 'Failed to resend OTP');
+          }
+        });
+      }
+    });
+    
+    // Toggle mobile menu
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('active');
+    }
+    
+    // Display alert message
+    function showAlert(type, message) {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.className = `alert alert-${type}`;
+      alertBox.textContent = message;
+      alertBox.style.display = 'block';
+      
+      // Add animation classes
+      alertBox.style.animation = 'none';
+      setTimeout(() => {
+        alertBox.style.animation = type === 'success' ? 'fadeInDown 0.5s forwards' : 'shake 0.5s forwards';
+      }, 10);
+      
+      // Auto-hide after some time except for errors
+      if (type !== 'error') {
+        setTimeout(() => {
+          alertBox.style.animation = 'fadeOut 0.5s forwards';
+          setTimeout(() => {
+            alertBox.style.display = 'none';
+          }, 500);
+        }, 5000);
+      }
+    }
+    
+    // Start OTP timer
+    function startOtpTimer() {
+      const resendOTPBtn = document.getElementById('resendOTP');
+      const countdownElement = document.getElementById('countdown');
+      let secondsLeft = 30;
+      
+      resendOTPBtn.disabled = true;
+      
+      const interval = setInterval(() => {
+        secondsLeft--;
+        countdownElement.textContent = secondsLeft;
+        
+        if (secondsLeft <= 0) {
+          clearInterval(interval);
+          resendOTPBtn.disabled = false;
+          resendOTPBtn.textContent = 'Resend OTP';
+        }
+      }, 1000);
+    }
+    
+    // Mask phone number for display (e.g., "+91 ******7890")
+    function maskPhone(phone) {
+      if (!phone) return '';
+      
+      // Keep first 3 and last 4 digits visible
+      const cleanPhone = phone.replace(/\D/g, '');
+      if (cleanPhone.length <= 4) return phone;
+      
+      const lastFour = cleanPhone.slice(-4);
+      const firstThree = cleanPhone.slice(0, 3);
+      const masked = '*'.repeat(cleanPhone.length - 7);
+      
+      return `+${firstThree} ${masked}${lastFour}`;
+    }
+    
+    // Reset OTP input fields
+    function resetOtpFields() {
+      const otpInputs = document.querySelectorAll('.otp-input');
+      otpInputs.forEach(input => {
+        input.value = '';
+      });
+      otpInputs[0].focus();
+    }
+    
+    // Track failed login attempts
+    function trackFailedAttempts() {
+      const failedAttempts = parseInt(localStorage.getItem('otpFailedAttempts') || '0') + 1;
+      localStorage.setItem('otpFailedAttempts', failedAttempts.toString());
+      
+      // If multiple failed attempts, show appropriate message
+      if (failedAttempts >= 3) {
+        showAlert('error', `Multiple failed attempts detected. Please wait before trying again or request a new OTP.`);
+        
+        // Disable verify button for a short time after multiple failures
+        const verifyBtn = document.querySelector('.verify-btn');
+        if (verifyBtn) {
+          verifyBtn.disabled = true;
+          setTimeout(() => {
+            verifyBtn.disabled = false;
+          }, 10000); // 10 seconds timeout
+        }
+      }
+      
+      // Reset counter after 30 minutes
+      setTimeout(() => {
+        localStorage.setItem('otpFailedAttempts', '0');
+      }, 30 * 60 * 1000);
+    }
+    
+    // Check for suspicious activity (browser fingerprinting)
+    function checkForSuspiciousActivity() {
+      try {
+        // Get device info for basic fingerprinting
+        const fingerprint = {
+          userAgent: navigator.userAgent,
+          language: navigator.language,
+          platform: navigator.platform,
+          screenSize: `${window.screen.width}x${window.screen.height}`,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          colorDepth: window.screen.colorDepth,
+          deviceMemory: navigator.deviceMemory || 'unknown',
+          timestamp: Date.now()
+        };
+        
+        // Get previous fingerprint if exists
+        const storedFingerprint = localStorage.getItem('deviceFingerprint');
+        
+        if (storedFingerprint) {
+          const parsedFingerprint = JSON.parse(storedFingerprint);
+          
+          // Check for major differences in device profile
+          const suspiciousChanges = [];
+          
+          if (fingerprint.userAgent !== parsedFingerprint.userAgent) {
+            suspiciousChanges.push('user agent changed');
+          }
+          
+          if (fingerprint.platform !== parsedFingerprint.platform) {
+            suspiciousChanges.push('platform changed');
+          }
+          
+          if (fingerprint.screenSize !== parsedFingerprint.screenSize) {
+            suspiciousChanges.push('screen size changed');
+          }
+          
+          if (fingerprint.timezone !== parsedFingerprint.timezone) {
+            suspiciousChanges.push('timezone changed');
+          }
+          
+          // Log suspicious activity
+          if (suspiciousChanges.length > 0) {
+            console.warn('Potentially suspicious activity detected:', suspiciousChanges.join(', '));
+            
+            // Store in fraud detection log
+            const fraudLog = JSON.parse(localStorage.getItem('fraudLog') || '[]');
+            fraudLog.push({
+              type: 'device_change',
+              changes: suspiciousChanges,
+              timestamp: Date.now()
+            });
+            
+            // Keep log size manageable
+            while (fraudLog.length > 20) {
+              fraudLog.shift();
+            }
+            
+            localStorage.setItem('fraudLog', JSON.stringify(fraudLog));
+            
+            // Optional: Display warning or require additional verification
+            // if severe changes are detected
+            if (suspiciousChanges.length >= 2) {
+              showAlert('warning', 'For your security, please verify your identity carefully.');
+            }
+          }
+        }
+        
+        // Update fingerprint
+        localStorage.setItem('deviceFingerprint', JSON.stringify(fingerprint));
+        
+      } catch (error) {
+        console.error('Error in fraud detection:', error);
+      }
+    }
+  </script>
+</body>
+</html>
